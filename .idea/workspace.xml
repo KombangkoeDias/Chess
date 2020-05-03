@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="587080ec-eed4-46fa-99a2-9432e00c3605" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Background.py" beforeDir="false" afterPath="$PROJECT_DIR$/Background.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Button.py" beforeDir="false" afterPath="$PROJECT_DIR$/Button.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Chess.py" beforeDir="false" afterPath="$PROJECT_DIR$/Chess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chessbackground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Horses.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,26 +86,26 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1515" height="213" key="GridCell.Tab.0.bottom" timestamp="1588493662959">
+    <state width="1515" height="213" key="GridCell.Tab.0.bottom" timestamp="1588495816655">
       <screen x="1920" y="0" width="1536" height="834" />
     </state>
     <state width="1259" height="166" key="GridCell.Tab.0.bottom/0.0.1280.689/1920.0.1536.834@0.0.1280.689" timestamp="1588407988109" />
-    <state width="1515" height="213" key="GridCell.Tab.0.bottom/0.0.1280.689/1920.0.1536.834@1920.0.1536.834" timestamp="1588493662959" />
-    <state width="1515" height="213" key="GridCell.Tab.0.center" timestamp="1588493662958">
+    <state width="1515" height="213" key="GridCell.Tab.0.bottom/0.0.1280.689/1920.0.1536.834@1920.0.1536.834" timestamp="1588495816655" />
+    <state width="1515" height="213" key="GridCell.Tab.0.center" timestamp="1588495816655">
       <screen x="1920" y="0" width="1536" height="834" />
     </state>
     <state width="1259" height="166" key="GridCell.Tab.0.center/0.0.1280.689/1920.0.1536.834@0.0.1280.689" timestamp="1588407988109" />
-    <state width="1515" height="213" key="GridCell.Tab.0.center/0.0.1280.689/1920.0.1536.834@1920.0.1536.834" timestamp="1588493662958" />
-    <state width="1515" height="213" key="GridCell.Tab.0.left" timestamp="1588493662958">
+    <state width="1515" height="213" key="GridCell.Tab.0.center/0.0.1280.689/1920.0.1536.834@1920.0.1536.834" timestamp="1588495816655" />
+    <state width="1515" height="213" key="GridCell.Tab.0.left" timestamp="1588495816654">
       <screen x="1920" y="0" width="1536" height="834" />
     </state>
     <state width="1259" height="166" key="GridCell.Tab.0.left/0.0.1280.689/1920.0.1536.834@0.0.1280.689" timestamp="1588407988109" />
-    <state width="1515" height="213" key="GridCell.Tab.0.left/0.0.1280.689/1920.0.1536.834@1920.0.1536.834" timestamp="1588493662958" />
-    <state width="1515" height="213" key="GridCell.Tab.0.right" timestamp="1588493662958">
+    <state width="1515" height="213" key="GridCell.Tab.0.left/0.0.1280.689/1920.0.1536.834@1920.0.1536.834" timestamp="1588495816654" />
+    <state width="1515" height="213" key="GridCell.Tab.0.right" timestamp="1588495816655">
       <screen x="1920" y="0" width="1536" height="834" />
     </state>
     <state width="1259" height="166" key="GridCell.Tab.0.right/0.0.1280.689/1920.0.1536.834@0.0.1280.689" timestamp="1588407988109" />
-    <state width="1515" height="213" key="GridCell.Tab.0.right/0.0.1280.689/1920.0.1536.834@1920.0.1536.834" timestamp="1588493662958" />
+    <state width="1515" height="213" key="GridCell.Tab.0.right/0.0.1280.689/1920.0.1536.834@1920.0.1536.834" timestamp="1588495816655" />
     <state x="455" y="57" key="RollbackChangesDialog" timestamp="1588406097233">
       <screen x="0" y="0" width="1280" height="689" />
     </state>

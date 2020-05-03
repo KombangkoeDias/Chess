@@ -5,6 +5,7 @@ from Event import startGame
 from Button import button
 from Background import BackgroundPhoto
 from square import drawSquare
+from Piece import DrawPawnPieces
 
 pygame.init()
 
@@ -22,7 +23,7 @@ darkgreen = (0,100,0)
 Width = 1000
 Height = 600
 
-Background = BackgroundPhoto('Chessbackground.png',[0,0])
+Background = BackgroundPhoto('Assets\Chessbackground.png',[0,0])
 screen = pygame.display.set_mode((Width, Height))
 
 pygame.display.set_caption('Chess Game')
@@ -56,30 +57,17 @@ def game_intro():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
-        """
-        mouse = pygame.mouse.get_pos()
-        #print(mouse)
-        #pygame.draw.rect(screen, vegasgold, (Width//2 - 100, Height//2 + 50, 150, 40))
-        if (150 + Width//2 -100 > mouse[0] > Width//2 -100 and Height//2 + 50 +40 > mouse[1] > Height//2 + 50):
-            pygame.draw.rect(screen,gold,(Width//2 - 100, Height//2 + 50, 150, 40))
-        else:
-            pygame.draw.rect(screen, vegasgold, (Width // 2 - 100, Height // 2 + 50, 150, 40))
-
-        smallText = pygame.font.Font("freesansbold.ttf",20)
-        Gotext = smallText.render("Start",True, black)
-        GoRect = Gotext.get_rect()
-        GoRect.center = ((Width // 2 - 100 + 75, Height // 2 + 50 + 20))
-        screen.blit(Gotext,GoRect)
-        """
-
         intro = button(screen, "Start", Width // 2 - 100, Height // 2 + 50, 150, 40, vegasgold, gold, startGame)
         button(screen,"Quit",Width//2-100,Height//2+120,150,40,red,tomago,quit)
         pygame.display.update()
         clock.tick(15)
 # infinite loop
 
-GameplayBackground = BackgroundPhoto('Horses.jpg',[0,0])
+GameplayBackground = BackgroundPhoto('Assets\Horses.jpg',[0,0])
+
+WhitePawn = list()
+for i in range(8):
+    WhitePawn.append((230+70*i, 460))
 def start_game():
     gamePlay = True
     while gamePlay:
@@ -95,6 +83,8 @@ def start_game():
                     drawSquare(screen, 220+70*j, 30+70*i, 70, 70,white)
                 else:
                     drawSquare(screen, 220+70*i, 30+70*j, 70, 70,darkgreen)
+        DrawPawnPieces(screen,WhitePawn)
         pygame.display.update()
+
 game_intro()
 start_game()
