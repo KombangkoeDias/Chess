@@ -3,7 +3,8 @@ from numpy import vectorize
 
 from Event import startGame
 from Button import button
-from Background import Background
+from Background import BackgroundPhoto
+from square import drawSquare
 
 pygame.init()
 
@@ -15,11 +16,13 @@ red = (128,0,0)
 black = (0,0,0)
 gold = (255,215,0)
 vegasgold = (197,179,88)
+tomago = (255,99,71)
+darkgreen = (0,100,0)
 
 Width = 1000
 Height = 600
 
-Background = Background('Chessbackground.png',[0,0])
+Background = BackgroundPhoto('Chessbackground.png',[0,0])
 screen = pygame.display.set_mode((Width, Height))
 
 pygame.display.set_caption('Chess Game')
@@ -40,10 +43,10 @@ clock = pygame.time.Clock()
 
 check = 0
 
-intro = True
+
 
 def game_intro():
-
+    intro = True
     while intro:
         screen.blit(Background.image, Background.rect)
         screen.blit(text, textRect)
@@ -53,6 +56,7 @@ def game_intro():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+
         """
         mouse = pygame.mouse.get_pos()
         #print(mouse)
@@ -68,8 +72,29 @@ def game_intro():
         GoRect.center = ((Width // 2 - 100 + 75, Height // 2 + 50 + 20))
         screen.blit(Gotext,GoRect)
         """
-        button(screen, "Start", Width // 2 - 100, Height // 2 + 50, 150, 40, vegasgold, gold, startGame)
+
+        intro = button(screen, "Start", Width // 2 - 100, Height // 2 + 50, 150, 40, vegasgold, gold, startGame)
+        button(screen,"Quit",Width//2-100,Height//2+120,150,40,red,tomago,quit)
         pygame.display.update()
         clock.tick(15)
 # infinite loop
+
+GameplayBackground = BackgroundPhoto('Horses.jpg',[0,0])
+def start_game():
+    gamePlay = True
+    while gamePlay:
+        screen.blit(GameplayBackground.image, GameplayBackground.rect)
+        for event in pygame.event.get():
+            # print(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        for i in range(8):
+            for j in range(8):
+                if ((i+j) % 2 == 0):
+                    drawSquare(screen, 220+70*j, 30+70*i, 70, 70,white)
+                else:
+                    drawSquare(screen, 220+70*i, 30+70*j, 70, 70,darkgreen)
+        pygame.display.update()
 game_intro()
+start_game()
