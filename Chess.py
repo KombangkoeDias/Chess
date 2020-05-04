@@ -5,7 +5,7 @@ from Event import startGame
 from Button import button
 from Background import BackgroundPhoto
 from square import drawSquare
-from Piece import DrawPawnPieces
+from Piece import DrawPawnPieces,DrawKnightPieces,DrawBishopPieces,DrawKingPieces,DrawQueenPieces,DrawRookPieces
 
 pygame.init()
 
@@ -66,8 +66,42 @@ def game_intro():
 GameplayBackground = BackgroundPhoto('Assets\Horses.jpg',[0,0])
 
 WhitePawn = list()
+WhiteKnight = list()
+WhiteBishop = list()
+WhiteRook = list()
+WhiteKing = list()
+WhiteQueen = list()
+
+BlackPawn = list()
+BlackKnight = list()
+BlackBishop = list()
+BlackRook = list()
+BlackKing = list()
+BlackQueen = list()
+
+def blackposition(i):
+    return (230+70*i,40)
+def whiteposition(i):
+    return (230+70*i,530)
 for i in range(8):
     WhitePawn.append((230+70*i, 460))
+    BlackPawn.append((230+70*i,110))
+for i in range(8):
+    if (i == 0 or i == 7):
+        WhiteRook.append(whiteposition(i))
+        BlackRook.append(blackposition(i))
+    elif (i == 1 or i == 6):
+        WhiteKnight.append(whiteposition(i))
+        BlackKnight.append(blackposition(i))
+    elif (i == 2 or i == 5):
+        WhiteBishop.append(whiteposition(i))
+        BlackBishop.append(blackposition(i))
+    elif (i == 3):
+        WhiteQueen.append(whiteposition(i))
+        BlackQueen.append(blackposition(i))
+    else:
+        WhiteKing.append(whiteposition(i))
+        BlackKing.append(blackposition(i))
 def start_game():
     gamePlay = True
     while gamePlay:
@@ -83,7 +117,20 @@ def start_game():
                     drawSquare(screen, 220+70*j, 30+70*i, 70, 70,white)
                 else:
                     drawSquare(screen, 220+70*i, 30+70*j, 70, 70,darkgreen)
-        DrawPawnPieces(screen,WhitePawn)
+        DrawPawnPieces(screen,WhitePawn,'white')
+        DrawKnightPieces(screen,WhiteKnight,'white')
+        DrawQueenPieces(screen,WhiteQueen,'white')
+        DrawRookPieces(screen,WhiteRook,'white')
+        DrawBishopPieces(screen,WhiteBishop,'white')
+        DrawKingPieces(screen,WhiteKing,'white')
+
+        DrawPawnPieces(screen,BlackPawn,'black')
+        DrawKnightPieces(screen,BlackKnight,'black')
+        DrawQueenPieces(screen,BlackQueen,'black')
+        DrawRookPieces(screen,BlackRook,'black')
+        DrawBishopPieces(screen,BlackBishop,'black')
+        DrawKingPieces(screen,BlackKing,'black')
+
         pygame.display.update()
 
 game_intro()
