@@ -4,7 +4,7 @@ from numpy import vectorize
 from Event import startGame
 from Button import button
 from Background import BackgroundPhoto
-from square import drawSquare
+from square import drawSquare,Square
 from Piece import DrawPawnPieces,DrawKnightPieces,DrawBishopPieces,DrawKingPieces,DrawQueenPieces,DrawRookPieces
 
 pygame.init()
@@ -19,6 +19,7 @@ gold = (255,215,0)
 vegasgold = (197,179,88)
 tomago = (255,99,71)
 darkgreen = (0,100,0)
+yellow = (255,255,0)
 
 Width = 1000
 Height = 600
@@ -79,13 +80,19 @@ BlackRook = list()
 BlackKing = list()
 BlackQueen = list()
 
+Squarelist = list()
+for i in range(8):
+    mylist = list()
+    Squarelist.append(mylist)
 def blackposition(i):
-    return (230+70*i,40)
+    return (230+70*i, 40)
 def whiteposition(i):
-    return (230+70*i,530)
+    return (230+70*i, 530)
+
 for i in range(8):
     WhitePawn.append((230+70*i, 460))
-    BlackPawn.append((230+70*i,110))
+    BlackPawn.append((230+70*i, 110))
+
 for i in range(8):
     if (i == 0 or i == 7):
         WhiteRook.append(whiteposition(i))
@@ -102,10 +109,37 @@ for i in range(8):
     else:
         WhiteKing.append(whiteposition(i))
         BlackKing.append(blackposition(i))
+
+def drawPieces():
+    DrawPawnPieces(screen, WhitePawn, 'white')
+    DrawKnightPieces(screen, WhiteKnight, 'white')
+    DrawQueenPieces(screen, WhiteQueen, 'white')
+    DrawRookPieces(screen, WhiteRook, 'white')
+    DrawBishopPieces(screen, WhiteBishop, 'white')
+    DrawKingPieces(screen, WhiteKing, 'white')
+
+    DrawPawnPieces(screen, BlackPawn, 'black')
+    DrawKnightPieces(screen, BlackKnight, 'black')
+    DrawQueenPieces(screen, BlackQueen, 'black')
+    DrawRookPieces(screen, BlackRook, 'black')
+    DrawBishopPieces(screen, BlackBishop, 'black')
+    DrawKingPieces(screen, BlackKing, 'black')
+
 def start_game():
     gamePlay = True
+    screen.blit(GameplayBackground.image, GameplayBackground.rect)
+    for i in range(8):
+        for j in range(8):
+            if ((i + j) % 2 == 0):
+                #drawSquare(screen, 220 + 70 * j, 30 + 70 * i, 70, 70, white)
+                newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
+                Squarelist[i].append(newSquare)
+            else:
+                #drawSquare(screen, 220 + 70 * i, 30 + 70 * j, 70, 70, darkgreen)
+                newSquare = Square(220 + 70 * i, 30 + 70 * j, 70, 70, darkgreen)
+                Squarelist[i].append(newSquare)
+    chosen = (10, 10)
     while gamePlay:
-        screen.blit(GameplayBackground.image, GameplayBackground.rect)
         for event in pygame.event.get():
             # print(event)
             if event.type == pygame.QUIT:
@@ -113,24 +147,22 @@ def start_game():
                 quit()
         for i in range(8):
             for j in range(8):
-                if ((i+j) % 2 == 0):
-                    drawSquare(screen, 220+70*j, 30+70*i, 70, 70,white)
+                newSquare = Squarelist[i][j]
+                if ((i + j) % 2 == 0):
+                    drawSquare(screen, newSquare.x, newSquare.y, newSquare.w, newSquare.h, newSquare.color)
+                    if (newSquare.choose()):
+                        chosen = (i,j)
+                        drawSquare(screen, newSquare.x, newSquare.y, newSquare.w, newSquare.h, yellow )
+                    #newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
+                    #Squarelist[i].append(newSquare)
                 else:
-                    drawSquare(screen, 220+70*i, 30+70*j, 70, 70,darkgreen)
-        DrawPawnPieces(screen,WhitePawn,'white')
-        DrawKnightPieces(screen,WhiteKnight,'white')
-        DrawQueenPieces(screen,WhiteQueen,'white')
-        DrawRookPieces(screen,WhiteRook,'white')
-        DrawBishopPieces(screen,WhiteBishop,'white')
-        DrawKingPieces(screen,WhiteKing,'white')
-
-        DrawPawnPieces(screen,BlackPawn,'black')
-        DrawKnightPieces(screen,BlackKnight,'black')
-        DrawQueenPieces(screen,BlackQueen,'black')
-        DrawRookPieces(screen,BlackRook,'black')
-        DrawBishopPieces(screen,BlackBishop,'black')
-        DrawKingPieces(screen,BlackKing,'black')
-
+                    drawSquare(screen, newSquare.x, newSquare.y, newSquare.w, newSquare.h, newSquare.color)
+                    if (newSquare.choose()):
+                        chosen = (i,j)
+                        drawSquare(screen, newSquare.x, newSquare.y, newSquare.w, newSquare.h, yellow)
+                    #newSquare = Square(220 + 70 * i, 30 + 70 * j, 70, 70, darkgreen)
+                    #Squarelist[i].append(newSquare)
+        drawPieces()
         pygame.display.update()
 
 game_intro()
