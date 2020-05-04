@@ -20,6 +20,7 @@ vegasgold = (197,179,88)
 tomago = (255,99,71)
 darkgreen = (0,100,0)
 yellow = (255,255,0)
+orange = (255, 165, 0)
 
 Width = 1000
 Height = 600
@@ -139,7 +140,10 @@ def start_game():
                 newSquare = Square(220 + 70 * i, 30 + 70 * j, 70, 70, darkgreen)
                 Squarelist[i].append(newSquare)
     chosen = (10, 10)
+    click = list()
+    pygame.time.delay(1000)
     while gamePlay:
+
         for event in pygame.event.get():
             # print(event)
             if event.type == pygame.QUIT:
@@ -153,6 +157,9 @@ def start_game():
                     if (newSquare.choose()):
                         chosen = (i,j)
                         drawSquare(screen, newSquare.x, newSquare.y, newSquare.w, newSquare.h, yellow )
+                    if (newSquare.getclick()):
+                        click.clear()
+                        click.append(newSquare)
                     #newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                     #Squarelist[i].append(newSquare)
                 else:
@@ -160,8 +167,13 @@ def start_game():
                     if (newSquare.choose()):
                         chosen = (i,j)
                         drawSquare(screen, newSquare.x, newSquare.y, newSquare.w, newSquare.h, yellow)
+                    if (newSquare.getclick()):
+                        click.clear()
+                        click.append(newSquare)
                     #newSquare = Square(220 + 70 * i, 30 + 70 * j, 70, 70, darkgreen)
                     #Squarelist[i].append(newSquare)
+        for newSquare in click:
+            drawSquare(screen, newSquare.x, newSquare.y, newSquare.w, newSquare.h, orange)
         drawPieces()
         pygame.display.update()
 

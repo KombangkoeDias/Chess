@@ -9,6 +9,7 @@ class Square:
         self.h = h
         self.color = ic
         self.chosen = False
+        self.click = False
     def choose(self):
         mouse = pygame.mouse.get_pos()
         if (self.x + self.w > mouse[0] > self.x and self.y + self.h > mouse[1] > self.y):
@@ -17,6 +18,18 @@ class Square:
         else:
             self.chosen = False
             return False
+    def getclick(self):
+        mouse = pygame.mouse.get_pos()
+        if (self.x + self.w > mouse[0] > self.x and self.y + self.h > mouse[1] > self.y):
+            if (pygame.mouse.get_pressed()[0] == 1):
+                self.click = True
+                return True
+            else:
+                self.click = False
+                return False
+
+
+
 
 
 
