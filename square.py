@@ -1,4 +1,5 @@
 import pygame
+from Piece import ChessPieces
 def drawSquare(screen,x, y, w,h, ic):
     pygame.draw.rect(screen,ic,(x,y,w,h))
 class Square:
@@ -10,6 +11,7 @@ class Square:
         self.color = ic
         self.chosen = False
         self.click = False
+        self.Piece = ChessPieces('Assets\Pieces\whitePawn.png', (0,0),'Empty Space')
     def choose(self):
         mouse = pygame.mouse.get_pos()
         if (self.x + self.w > mouse[0] > self.x and self.y + self.h > mouse[1] > self.y):
@@ -27,6 +29,8 @@ class Square:
             else:
                 self.click = False
                 return False
+    def addPieces(self,Piece):
+        self.Piece = Piece
 
 
 

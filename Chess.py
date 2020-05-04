@@ -1,11 +1,10 @@
 import pygame
-from numpy import vectorize
 
 from Event import startGame
 from Button import button
 from Background import BackgroundPhoto
 from square import drawSquare,Square
-from Piece import DrawPawnPieces,DrawKnightPieces,DrawBishopPieces,DrawKingPieces,DrawQueenPieces,DrawRookPieces
+from Piece import DrawPawnPieces,DrawKnightPieces,DrawBishopPieces,DrawKingPieces,DrawQueenPieces,DrawRookPieces,ChessPieces
 
 pygame.init()
 
@@ -67,12 +66,26 @@ def game_intro():
 
 GameplayBackground = BackgroundPhoto('Assets\Horses.jpg',[0,0])
 
+WhitePawnList = list()
+WhiteKnightList = list()
+WhiteBishopList= list()
+WhiteRookList = list()
+WhiteKingList = list()
+WhiteQueenList = list()
+
 WhitePawn = list()
 WhiteKnight = list()
 WhiteBishop = list()
 WhiteRook = list()
 WhiteKing = list()
 WhiteQueen = list()
+
+BlackPawnList = list()
+BlackKnightList = list()
+BlackBishopList = list()
+BlackRookList = list()
+BlackKingList = list()
+BlackQueenList = list()
 
 BlackPawn = list()
 BlackKnight = list()
@@ -134,16 +147,61 @@ def start_game():
             if ((i + j) % 2 == 0):
                 #drawSquare(screen, 220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
+                piecelocation = (newSquare.x + 10 + 70 * j, newSquare.y + 10 + 70 * j)
+                if (i == 1):
+                    newSquare.addPieces(ChessPieces('Assets/Pieces/blackPawn.png',piecelocation ,'BlackPawn'))
+                if (i == 0):
+                    if (j == 0):
+                        newSquare.addPieces(ChessPieces('Assets/Pieces/blackRook.png',piecelocation ,'BlackRook'))
+                    if (j == 2):
+                        newSquare.addPieces(ChessPieces('Assets/Pieces/blackBishop.png', piecelocation ,'BlackBishop'))
+                    if (j == 4):
+                        newSquare.addPieces(ChessPieces('Assets\Pieces/blackKing.png', piecelocation ,'BlackKing'))
+                    if (j == 6):
+                        newSquare.addPieces(ChessPieces('Assets/Pieces/blackKnight.png', piecelocation ,'BlackKnight'))
+                if (i == 6):
+                    newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation,'WhitePawn'))
+                if (i == 7):
+                    if (j == 1):
+                        newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation ,'WhiteKnight'))
+                    if (j == 3):
+                        newSquare.addPieces(ChessPieces('Assets\Pieces\whiteQueen.png', piecelocation ,'WhiteQueen'))
+                    if (j == 5):
+                        newSquare.addPieces(ChessPieces('Assets\Pieces\whiteBishop.png', piecelocation ,'WhiteBishop'))
+                    if (j == 7):
+                        newSquare.addPieces(ChessPieces('Assets\Pieces\whiteRook.png', piecelocation ,'WhiteRook'))
                 Squarelist[i].append(newSquare)
             else:
                 #drawSquare(screen, 220 + 70 * i, 30 + 70 * j, 70, 70, darkgreen)
-                newSquare = Square(220 + 70 * i, 30 + 70 * j, 70, 70, darkgreen)
+                newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, darkgreen)
+                piecelocation = (newSquare.x + 10 + 70 * j, newSquare.y + 10 + 70 * j)
+                if (i == 1):
+                    newSquare.addPieces(ChessPieces('Assets/Pieces/blackPawn.png',piecelocation ,'BlackPawn'))
+                if (i == 0):
+                    if (j == 1):
+                        newSquare.addPieces(ChessPieces('Assets/Pieces/blackKnight.png', piecelocation ,'BlackKnight'))
+                    if (j == 3):
+                        newSquare.addPieces(ChessPieces('Assets\Pieces/blackQueen.png', piecelocation,'BlackQueen'))
+                    if (j == 5):
+                        newSquare.addPieces(ChessPieces('Assets/Pieces/blackBishop.png', piecelocation ,'BlackBishop'))
+                    if (j == 7):
+                        newSquare.addPieces(ChessPieces('Assets/Pieces/blackRook.png',piecelocation ,'BlackRook'))
+                if (i == 6):
+                    newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation,'WhitePawn'))
+                if (i == 7):
+                    if (j == 0):
+                        newSquare.addPieces(ChessPieces('Assets\Pieces\whiteRook.png', piecelocation ,'WhiteRook'))
+                    if (j == 2):
+                        newSquare.addPieces(ChessPieces('Assets\Pieces\whiteBishop.png', piecelocation ,'WhiteBishop'))
+                    if (j == 4):
+                        newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKing.png', piecelocation,'WhiteKing'))
+                    if (j == 6):
+                        newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation ,'WhiteKnight'))
                 Squarelist[i].append(newSquare)
     chosen = (10, 10)
     click = list()
     pygame.time.delay(1000)
     while gamePlay:
-
         for event in pygame.event.get():
             # print(event)
             if event.type == pygame.QUIT:
@@ -160,6 +218,8 @@ def start_game():
                     if (newSquare.getclick()):
                         click.clear()
                         click.append(newSquare)
+                        #print(i,j)
+                        print(newSquare.Piece.type)
                     #newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                     #Squarelist[i].append(newSquare)
                 else:
@@ -170,6 +230,9 @@ def start_game():
                     if (newSquare.getclick()):
                         click.clear()
                         click.append(newSquare)
+                        #print(i,j)
+                        print(newSquare.Piece.type)
+
                     #newSquare = Square(220 + 70 * i, 30 + 70 * j, 70, 70, darkgreen)
                     #Squarelist[i].append(newSquare)
         for newSquare in click:
