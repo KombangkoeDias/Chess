@@ -1,5 +1,6 @@
 import pygame
 from Piece import ChessPieces
+from moves import WhitePawnMoves,BlackPawnMoves
 def drawSquare(screen,mySquare,ic):
     pygame.draw.rect(screen,ic,(mySquare.x,mySquare.y,mySquare.w,mySquare.h))
 Empty = 'Empty Space'
@@ -55,22 +56,9 @@ class Square:
                     a = i
                     b = j
         if (self.Piece.type == PawnW):
-            if (a == 6):
-                if (Squarelist[a-1][b].Piece.type == Empty):
-                    walkresult.append(Squarelist[a-1][b])
-                if (Squarelist[a-2][b].Piece.type == Empty):
-                    walkresult.append(Squarelist[a-2][b])
-                if (Squarelist[a-1][b-1].Piece.type in BlackList):
-                    eatresult.append(Squarelist[a-1][b-1])
-                if (Squarelist[a-1][b+1].Piece.type in BlackList):
-                    eatresult.append(Squarelist[a-1][b+1])
-            elif (a < 7 and a > 0):
-                if (Squarelist[a-1][b].Piece.type == Empty):
-                    walkresult.append(Squarelist[a-1][b])
-                if (Squarelist[a-1][b-1].Piece.type in BlackList):
-                    eatresult.append(Squarelist)
-                if (Squarelist[a-1][b+1].Piece.type in BlackList):
-                    eatresult.append(Squarelist[a-1][b+1])
+            walkresult,eatresult = WhitePawnMoves(Squarelist,a,b,walkresult,eatresult)
+        if (self.Piece.type == PawnB):
+            walkresult,eatresult = BlackPawnMoves(Squarelist,a,b,walkresult,eatresult)
         return (walkresult,eatresult)
 
 

@@ -217,9 +217,9 @@ def start_game():
                     #newSquare = Square(220 + 70 * i, 30 + 70 * j, 70, 70, darkgreen)
                     #Squarelist[i].append(newSquare)
         for newSquare in click:
-            walkresult,eatresult = newSquare.evaluatepossiblemoves(Squarelist)
+            walkresult, eatresult = newSquare.evaluatepossiblemoves(Squarelist)
             for walkSquare in walkresult:
-                drawSquare(screen,walkSquare,green)
+                pygame.draw.circle(screen,green,(walkSquare.x+35,walkSquare.y+35),7)
             for eatSquare in eatresult:
                 drawSquare(screen,eatSquare,red)
             drawSquare(screen, newSquare, orange)
