@@ -193,7 +193,7 @@ def start_game():
                     if (newSquare.choose()):
                         chosen = (i,j)
                         drawSquare(screen, newSquare.x, newSquare.y, newSquare.w, newSquare.h, yellow )
-                    if (newSquare.getclick()):
+                    if (newSquare.getclick() and newSquare.Piece.type != 'Empty Space'):
                         if (len(click) == 0):
                             click.append(newSquare)
                             # print(i,j)
@@ -210,7 +210,7 @@ def start_game():
                     if (newSquare.choose()):
                         chosen = (i,j)
                         drawSquare(screen, newSquare.x, newSquare.y, newSquare.w, newSquare.h, yellow)
-                    if (newSquare.getclick()):
+                    if (newSquare.getclick() and newSquare.Piece.type != 'Empty Space'):
                         if (len(click) == 0):
                             click.append(newSquare)
                             # print(i,j)
