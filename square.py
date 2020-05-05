@@ -1,6 +1,6 @@
 import pygame
 from Piece import ChessPieces
-from moves import WhitePawnMoves,BlackPawnMoves
+from moves import WhitePawnMoves,BlackPawnMoves,KnightMoves
 def drawSquare(screen,mySquare,ic):
     pygame.draw.rect(screen,ic,(mySquare.x,mySquare.y,mySquare.w,mySquare.h))
 Empty = 'Empty Space'
@@ -59,6 +59,10 @@ class Square:
             walkresult,eatresult = WhitePawnMoves(Squarelist,a,b,walkresult,eatresult)
         if (self.Piece.type == PawnB):
             walkresult,eatresult = BlackPawnMoves(Squarelist,a,b,walkresult,eatresult)
+        if (self.Piece.type == KnightW):
+            walkresult,eatresult = KnightMoves(Squarelist,a,b,walkresult,eatresult,KnightW)
+        if (self.Piece.type == KnightB):
+            walkresult,eatresult = KnightMoves(Squarelist,a,b,walkresult,eatresult,KnightB)
         return (walkresult,eatresult)
 
 
