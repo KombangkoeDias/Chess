@@ -9,6 +9,8 @@ class ChessPieces:
         self.rect.left, self.rect.top = location
         self.type = type
         self.order = order
+def DrawPieces(screen,Square):
+    screen.blit(Square.Piece.image,Square.Piece.rect)
 def DrawPawnPieces(screen, PawnList, side):
     for pawnlocation in PawnList:
         if (side == 'white'):

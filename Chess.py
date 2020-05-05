@@ -4,7 +4,7 @@ from Event import startGame
 from Button import button
 from Background import BackgroundPhoto
 from square import drawSquare,Square
-from Piece import DrawPawnPieces,DrawKnightPieces,DrawBishopPieces,DrawKingPieces,DrawQueenPieces,DrawRookPieces,ChessPieces
+from Piece import ChessPieces,DrawPieces
 
 pygame.init()
 
@@ -112,20 +112,11 @@ for i in range(8):
         BlackKing.append(blackposition(i))
 
 def drawPieces():
-    DrawPawnPieces(screen, WhitePawn, 'white')
-    DrawKnightPieces(screen, WhiteKnight, 'white')
-    DrawQueenPieces(screen, WhiteQueen, 'white')
-    DrawRookPieces(screen, WhiteRook, 'white')
-    DrawBishopPieces(screen, WhiteBishop, 'white')
-    DrawKingPieces(screen, WhiteKing, 'white')
-
-    DrawPawnPieces(screen, BlackPawn, 'black')
-    DrawKnightPieces(screen, BlackKnight, 'black')
-    DrawQueenPieces(screen, BlackQueen, 'black')
-    DrawRookPieces(screen, BlackRook, 'black')
-    DrawBishopPieces(screen, BlackBishop, 'black')
-    DrawKingPieces(screen, BlackKing, 'black')
-
+    for i in range(8):
+        for j in range(8):
+            newSquare = Squarelist[i][j]
+            if (Squarelist[i][j].Piece.type != 'Empty Space'):
+                   DrawPieces(screen,newSquare)
 def start_game():
     gamePlay = True
     screen.blit(GameplayBackground.image, GameplayBackground.rect)
@@ -134,7 +125,7 @@ def start_game():
             if ((i + j) % 2 == 0):
                 #drawSquare(screen, 220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
-                piecelocation = (newSquare.x + 10 + 70 * j, newSquare.y + 10 + 70 * j)
+                piecelocation = (newSquare.x + 10, newSquare.y + 10)
                 if (i == 1):
                     newSquare.addPieces(ChessPieces('Assets/Pieces/blackPawn.png',piecelocation ,'BlackPawn',j))
                 if (i == 0):
@@ -161,7 +152,7 @@ def start_game():
             else:
                 #drawSquare(screen, 220 + 70 * i, 30 + 70 * j, 70, 70, darkgreen)
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, darkgreen)
-                piecelocation = (newSquare.x + 10 + 70 * j, newSquare.y + 10 + 70 * j)
+                piecelocation = (newSquare.x + 10, newSquare.y + 10)
                 if (i == 1):
                     newSquare.addPieces(ChessPieces('Assets/Pieces/blackPawn.png',piecelocation ,'BlackPawn',j))
                 if (i == 0):
