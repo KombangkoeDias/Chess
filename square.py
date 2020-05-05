@@ -11,7 +11,7 @@ class Square:
         self.color = ic
         self.chosen = False
         self.click = False
-        self.Piece = ChessPieces('Assets\Pieces\whitePawn.png', (0,0),'Empty Space')
+        self.Piece = ChessPieces('Assets\Pieces\whitePawn.png', (0,0),'Empty Space',None)
     def choose(self):
         mouse = pygame.mouse.get_pos()
         if (self.x + self.w > mouse[0] > self.x and self.y + self.h > mouse[1] > self.y):
