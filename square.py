@@ -1,7 +1,22 @@
 import pygame
 from Piece import ChessPieces
-def drawSquare(screen,x, y, w,h, ic):
-    pygame.draw.rect(screen,ic,(x,y,w,h))
+def drawSquare(screen,mySquare,ic):
+    pygame.draw.rect(screen,ic,(mySquare.x,mySquare.y,mySquare.w,mySquare.h))
+Empty = 'Empty Space'
+PawnW = 'WhitePawn'
+PawnB = 'BlackPawn'
+KnightW = 'WhiteKnight'
+KnightB = 'BlackKnight'
+BishopW = 'WhiteBishop'
+BishopB = 'BlackBishop'
+RookW = 'WhiteRook'
+RookB = 'BlackRook'
+QueenW = 'WhiteQueen'
+QueenB = 'BlackQueen'
+KingW = 'WhiteKing'
+KingB = 'BlackKing'
+WhiteList = [PawnW,KnightW,BishopW,RookW,QueenW,KingW]
+BlackList = [PawnB,KnightB,BishopB,RookB,QueenB,KingB]
 class Square:
     def __init__(self,x,y,w,h,ic):
         self.x = x
@@ -11,7 +26,7 @@ class Square:
         self.color = ic
         self.chosen = False
         self.click = False
-        self.Piece = ChessPieces('Assets\Pieces\whitePawn.png', (0,0),'Empty Space',None)
+        self.Piece = ChessPieces('Assets\Pieces\whitePawn.png', (0,0),Empty,None)
     def choose(self):
         mouse = pygame.mouse.get_pos()
         if (self.x + self.w > mouse[0] > self.x and self.y + self.h > mouse[1] > self.y):
@@ -31,7 +46,32 @@ class Square:
                 return False
     def addPieces(self,Piece):
         self.Piece = Piece
-
+    def evaluatepossiblemoves(self,Squarelist):
+        walkresult = list()
+        eatresult = list()
+        for i in range(8):
+            for j in range(8):
+                if Squarelist[i][j] == self:
+                    a = i
+                    b = j
+        if (self.Piece.type == PawnW):
+            if (a == 6):
+                if (Squarelist[a-1][b].Piece.type == Empty):
+                    walkresult.append(Squarelist[a-1][b])
+                if (Squarelist[a-2][b].Piece.type == Empty):
+                    walkresult.append(Squarelist[a-2][b])
+                if (Squarelist[a-1][b-1].Piece.type in BlackList):
+                    eatresult.append(Squarelist[a-1][b-1])
+                if (Squarelist[a-1][b+1].Piece.type in BlackList):
+                    eatresult.append(Squarelist[a-1][b+1])
+            elif (a < 7 and a > 0):
+                if (Squarelist[a-1][b].Piece.type == Empty):
+                    walkresult.append(Squarelist[a-1][b])
+                if (Squarelist[a-1][b-1].Piece.type in BlackList):
+                    eatresult.append(Squarelist)
+                if (Squarelist[a-1][b+1].Piece.type in BlackList):
+                    eatresult.append(Squarelist[a-1][b+1])
+        return (walkresult,eatresult)
 
 
 
