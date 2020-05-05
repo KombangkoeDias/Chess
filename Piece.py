@@ -2,12 +2,13 @@ import pygame
 
 
 class ChessPieces:
-    def __init__(self, image_file, location,type,order):
+    def __init__(self, image_file, location,type,order,side):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(image_file)
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
         self.type = type
+        self.side = side
         self.order = order
 def DrawPieces(screen,Square):
     screen.blit(Square.Piece.image,Square.Piece.rect)

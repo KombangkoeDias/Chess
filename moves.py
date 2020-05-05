@@ -13,6 +13,8 @@ KingW = 'WhiteKing'
 KingB = 'BlackKing'
 WhiteList = [PawnW,KnightW,BishopW,RookW,QueenW,KingW]
 BlackList = [PawnB,KnightB,BishopB,RookB,QueenB,KingB]
+noside = ''
+
 import pygame
 def checkPosition(move):
     if (move[0] > -1 and move[0] < 8 and move[1] > -1 and move[1] < 8):
@@ -86,4 +88,46 @@ def KnightMoves(Squarelist,a,b,walkresult,eatresult,type):
             eatresult.append(Squarelist[i][j])
         if (type == KnightB and Squarelist[i][j].Piece.type in WhiteList):
             eatresult.append(Squarelist[i][j])
+    return (walkresult,eatresult)
+def BishopMoves(Squarelist,a,b,walkresult,eatresult,side):
+    i = 1
+    while(checkPosition((a+i,b+i))):
+        first = a+i
+        second = b+i
+        if (Squarelist[first][second].Piece.type != Empty):
+            if (side != Squarelist[first][second].Piece.side and Squarelist[first][second].Piece.side != noside):
+                eatresult.append(Squarelist[first][second])
+            break
+        walkresult.append(Squarelist[first][second])
+        i+=1
+    i = 1
+    while(checkPosition((a+i,b-i))):
+        first = a+i
+        second = b-i
+        if (Squarelist[first][second].Piece.type != Empty):
+            if (side != Squarelist[first][second].Piece.side and Squarelist[first][second].Piece.side != noside):
+                eatresult.append(Squarelist[first][second])
+            break
+        walkresult.append(Squarelist[first][second])
+        i+=1
+    i = 1
+    while(checkPosition((a-i,b+i))):
+        first = a-i
+        second = b+i
+        if (Squarelist[first][second].Piece.type != Empty):
+            if (side != Squarelist[first][second].Piece.side and Squarelist[first][second].Piece.side != noside):
+                eatresult.append(Squarelist[first][second])
+            break
+        walkresult.append(Squarelist[first][second])
+        i+=1
+    i = 1
+    while(checkPosition((a-i,b-i))):
+        first = a-i
+        second = b-i
+        if (Squarelist[first][second].Piece.type != Empty):
+            if (side != Squarelist[first][second].Piece.side and Squarelist[first][second].Piece.side != noside):
+                eatresult.append(Squarelist[first][second])
+            break
+        walkresult.append(Squarelist[first][second])
+        i+=1
     return (walkresult,eatresult)

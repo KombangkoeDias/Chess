@@ -1,8 +1,11 @@
 import pygame
 from Piece import ChessPieces
-from moves import WhitePawnMoves,BlackPawnMoves,KnightMoves
+from moves import WhitePawnMoves,BlackPawnMoves,KnightMoves,BishopMoves
 def drawSquare(screen,mySquare,ic):
     pygame.draw.rect(screen,ic,(mySquare.x,mySquare.y,mySquare.w,mySquare.h))
+whiteside = 'White'
+blackside = 'Black'
+noside = ''
 Empty = 'Empty Space'
 PawnW = 'WhitePawn'
 PawnB = 'BlackPawn'
@@ -27,7 +30,7 @@ class Square:
         self.color = ic
         self.chosen = False
         self.click = False
-        self.Piece = ChessPieces('Assets\Pieces\whitePawn.png', (0,0),Empty,None)
+        self.Piece = ChessPieces('Assets\Pieces\whitePawn.png', (0,0),Empty,None,noside)
     def choose(self):
         mouse = pygame.mouse.get_pos()
         if (self.x + self.w > mouse[0] > self.x and self.y + self.h > mouse[1] > self.y):
@@ -63,6 +66,12 @@ class Square:
             walkresult,eatresult = KnightMoves(Squarelist,a,b,walkresult,eatresult,KnightW)
         if (self.Piece.type == KnightB):
             walkresult,eatresult = KnightMoves(Squarelist,a,b,walkresult,eatresult,KnightB)
+        if (self.Piece.type == BishopW):
+            #print(a,b)
+            walkresult,eatresult = BishopMoves(Squarelist,a,b,walkresult,eatresult,whiteside)
+        if (self.Piece.type == BishopB):
+            #print(a,b)
+            walkresult,eatresult = BishopMoves(Squarelist,a,b,walkresult,eatresult,blackside)
         return (walkresult,eatresult)
 
 
