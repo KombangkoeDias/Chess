@@ -118,8 +118,11 @@ def start_game():
     screen.blit(GameplayBackground.image, GameplayBackground.rect)
     walkresult = list()
     eatresult = list()
+    turn = 0
+    lastmove = None
     for i in range(8):
         for j in range(8):
+
             if ((i+j) %2 ==0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
@@ -214,22 +217,19 @@ def start_game():
                     if (newSquare.choose()):
                         chosen = (i,j)
                         drawSquare(screen,newSquare, yellow)
-                    if (newSquare.getclick() and newSquare.Piece.type != 'Empty Space'):
-                        if (len(click) == 0):
-                            click.append(newSquare)
-                            # print(i,j)
-                            print(newSquare.Piece.type,newSquare.Piece.order)
-                        if (len(click) == 1 and ((newSquare in walkresult) or (newSquare in eatresult))):
-                            click.append(newSquare)
-                            print(click[0].Piece.type,click[0].Piece.type,"move to",i,j)
-                        elif (click[0] != newSquare):
-                            click.clear()
-                            click.append(newSquare)
-                            # print(i,j)
-                            print(newSquare.Piece.type,newSquare.Piece.order)
-                    if (len(click) ==1 and newSquare.getclick() and ((newSquare in walkresult) or newSquare in eatresult)):
+                    if (len(click) ==1 and newSquare.getclick() and ((newSquare in walkresult) or (newSquare in eatresult))):
                         click.append(newSquare)
                         print(click[0].Piece.type, click[0].Piece.order, "move to", i, j)
+
+                    elif (newSquare.getclick() and newSquare.Piece.type != 'Empty Space'):
+                        if (len(click) == 0):
+                            if (turn == 0 and newSquare.Piece.side == whiteside) or (turn == 1 and newSquare.Piece.side == blackside):
+                                if (newSquare != lastmove):
+                                    click.append(newSquare)
+                                    # print(i,j)
+                                    print(newSquare.Piece.type,newSquare.Piece.order)
+
+
                     """
                     if (len(click) == 2 and newSquare.getclick() and ((newSquare in walkresult) or newSquare in eatresult)):
                         if (newSquare != click[1]):
@@ -242,19 +242,16 @@ def start_game():
                     if (newSquare.choose()):
                         chosen = (i,j)
                         drawSquare(screen,newSquare, yellow)
-                    if (newSquare.getclick() and newSquare.Piece.type != 'Empty Space'):
-                        if (len(click) == 0):
-                            click.append(newSquare)
-                            # print(i,j)
-                            print(newSquare.Piece.type, newSquare.Piece.order)
-                        elif (click[0] != newSquare):
-                            click.clear()
-                            click.append(newSquare)
-                            # print(i,j)
-                            print(newSquare.Piece.type, newSquare.Piece.order)
-                    if (len(click) ==1 and newSquare.getclick() and ((newSquare in walkresult) or newSquare in eatresult)):
+                    if (len(click) ==1 and newSquare.getclick() and ((newSquare in walkresult) or (newSquare in eatresult))):
                         click.append(newSquare)
                         print(click[0].Piece.type, click[0].Piece.order, "move to", i, j)
+                    elif (newSquare.getclick() and newSquare.Piece.type != 'Empty Space'):
+                        if (len(click) == 0):
+                            if (turn == 0 and newSquare.Piece.side == whiteside) or (turn == 1 and newSquare.Piece.side == blackside):
+                                if (newSquare != lastmove):
+                                    click.append(newSquare)
+                                    # print(i,j)
+                                    print(newSquare.Piece.type, newSquare.Piece.order)
                     """
                     if (len(click) == 2 and newSquare.getclick() and ((newSquare in walkresult) or newSquare in eatresult)):
                         if (newSquare != click[1]):
@@ -262,15 +259,8 @@ def start_game():
                     """
                     #newSquare = Square(220 + 70 * i, 30 + 70 * j, 70, 70, darkgreen)
                     #Squarelist[i].append(newSquare)
+        #print(len(click))
         if (len(click) == 1):
-            selectedSquare = click[0]
-            walkresult, eatresult = selectedSquare.evaluatepossiblemoves(Squarelist)
-            for walkSquare in walkresult:
-                pygame.draw.circle(screen,green,(walkSquare.x+35,walkSquare.y+35),7)
-            for eatSquare in eatresult:
-                drawSquare(screen,eatSquare,red)
-            drawSquare(screen, selectedSquare, orange)
-        if (len(click) == 2):
             selectedSquare = click[0]
             walkresult, eatresult = selectedSquare.evaluatepossiblemoves(Squarelist)
             for walkSquare in walkresult:
@@ -278,8 +268,30 @@ def start_game():
             for eatSquare in eatresult:
                 drawSquare(screen, eatSquare, red)
             drawSquare(screen, selectedSquare, orange)
-            moveSquare = click[1]
-            drawSquare(screen,moveSquare,green)
+        if (len(click) == 2):
+            if (turn == 0 and click[0].Piece.side == whiteside):
+                selectedSquare = click[0]
+                for walkSquare in walkresult:
+                    pygame.draw.circle(screen, green, (walkSquare.x + 35, walkSquare.y + 35), 7)
+                for eatSquare in eatresult:
+                    drawSquare(screen, eatSquare, red)
+                drawSquare(screen, selectedSquare, orange)
+                moveSquare = click[1]
+                drawSquare(screen, moveSquare, green)
+                turn = 1
+            if (turn == 1 and click[0].Piece.side == blackside):
+                selectedSquare = click[0]
+                for walkSquare in walkresult:
+                    pygame.draw.circle(screen, green, (walkSquare.x + 35, walkSquare.y + 35), 7)
+                for eatSquare in eatresult:
+                    drawSquare(screen, eatSquare, red)
+                drawSquare(screen, selectedSquare, orange)
+                moveSquare = click[1]
+                drawSquare(screen, moveSquare, green)
+                turn = 0
+            lastmove = click[1]
+            click.clear()
+        #print(turn)
 
         check, first,second = evaluateCheck(Squarelist,whiteside)
         if check:
