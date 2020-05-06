@@ -3,7 +3,7 @@ import pygame
 from Event import startGame
 from Button import button
 from Background import BackgroundPhoto
-from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB
+from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck
 from Piece import ChessPieces, DrawPieces
 
 pygame.init()
@@ -20,6 +20,7 @@ tomago = (255,99,71)
 darkgreen = (0,100,0)
 yellow = (255,255,0)
 orange = (255, 165, 0)
+purple = (128,0,128)
 
 Width = 1000
 Height = 600
@@ -129,7 +130,7 @@ def start_game():
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation, KnightW, 1, whiteside))
             if (i == 3 and j == 3):
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whiteBishop.png', piecelocation, BishopW, 1, whiteside))
-            if (i == 5 and j == 2):
+            if (i == 4 and j == 2):
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation, KnightW, 0, whiteside))
             if (i == 6 and j == 3):
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKing.png', piecelocation, KingW, 0, whiteside))
@@ -249,6 +250,12 @@ def start_game():
             for eatSquare in eatresult:
                 drawSquare(screen,eatSquare,red)
             drawSquare(screen, newSquare, orange)
+        check, first,second = evaluateCheck(Squarelist,whiteside)
+        if check:
+            drawSquare(screen,Squarelist[first][second],purple)
+        check,first,second = evaluateCheck(Squarelist,blackside)
+        if check:
+            drawSquare(screen,Squarelist[first][second],purple)
         drawPieces()
         pygame.display.update()
 

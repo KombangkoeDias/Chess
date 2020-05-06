@@ -21,6 +21,27 @@ KingW = 'WhiteKing'
 KingB = 'BlackKing'
 WhiteList = [PawnW,KnightW,BishopW,RookW,QueenW,KingW]
 BlackList = [PawnB,KnightB,BishopB,RookB,QueenB,KingB]
+def evaluateCheck(Squarelist,side):
+    for i in range(8):
+        for j in range(8):
+            if side == whiteside:
+                if (Squarelist[i][j].Piece.type == KingW):
+                    for k in range(8):
+                        for l in range(8):
+                            if (Squarelist[k][l].Piece.side != side and Squarelist[k][l].Piece.type != KingW and Squarelist[k][l].Piece.type != KingB):
+                                walk,move = Squarelist[k][l].evaluatepossiblemoves(Squarelist)
+                                if (Squarelist[i][j] in walk or Squarelist[i][j] in move):
+                                    return (True,i,j)
+                    return (False,i,j)
+            if side == blackside:
+                if (Squarelist[i][j].Piece.type == KingB):
+                    for k in range(8):
+                        for l in range(8):
+                            if (Squarelist[k][l].Piece.side != side and Squarelist[k][l].Piece.type != KingW and Squarelist[k][l].Piece.type != KingB):
+                                walk,move = Squarelist[k][l].evaluatepossiblemoves(Squarelist)
+                                if (Squarelist[i][j] in walk or Squarelist[i][j] in move):
+                                    return (True,i,j)
+                    return (False,i,j)
 class Square:
     def __init__(self,x,y,w,h,ic):
         self.x = x
