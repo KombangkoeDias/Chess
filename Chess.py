@@ -10,6 +10,7 @@ noside = ''
 pygame.init()
 whiteside = 'White'
 blackside = 'Black'
+
 white = (255, 255, 255)
 green = (0, 255, 0)
 blue = (0, 0, 128)
@@ -22,6 +23,7 @@ darkgreen = (0,100,0)
 yellow = (255,255,0)
 orange = (255, 165, 0)
 purple = (128,0,128)
+lightblue = (173, 216, 230)
 
 Width = 1000
 Height = 600
@@ -120,6 +122,7 @@ def start_game():
     walkresult = list()
     eatresult = list()
     turn = 0
+    before = None
     lastmove = None
     for i in range(8):
         for j in range(8):
@@ -221,7 +224,8 @@ def start_game():
                     drawSquare(screen, newSquare, newSquare.color)
                     if (len(click) ==1 and newSquare.getclick() and ((newSquare in walkresult) or (newSquare in eatresult))):
                         click.append(newSquare)
-                        print(click[0].Piece.type, click[0].Piece.order, "move to", i, j)
+                        if (click[1].Piece.type == Empty):
+                            print(click[0].Piece.type, click[0].Piece.order, "moves to", i, j)
                     elif (len(click) == 1 and newSquare.getclick()):
                         if (turn == 0 and newSquare.Piece.side == whiteside) or (turn == 1 and newSquare.Piece.side == blackside):
                             if (newSquare != click[0]):
@@ -247,7 +251,8 @@ def start_game():
                     drawSquare(screen,newSquare,newSquare.color)
                     if (len(click) ==1 and newSquare.getclick() and ((newSquare in walkresult) or (newSquare in eatresult))):
                         click.append(newSquare)
-                        print(click[0].Piece.type, click[0].Piece.order, "move to", i, j)
+                        if (click[1].Piece.type == Empty):
+                            print(click[0].Piece.type, click[0].Piece.order, "moves to", i, j)
                     elif (len(click) == 1 and newSquare.getclick()):
                         if (turn == 0 and newSquare.Piece.side == whiteside) or (turn == 1 and newSquare.Piece.side == blackside):
                             if (newSquare != click[0]):
@@ -288,12 +293,15 @@ def start_game():
                 secondPiece = click[1].Piece
                 (firstpos1, firstpos2) = findSquarePosition(Squarelist, click[0])
                 (secondpos1, secondpos2) = findSquarePosition(Squarelist, click[1])
+                if (secondPiece.type != Empty):
+                    print(firstPiece.type,firstPiece.order,'at',firstpos1,firstpos2,'eats',secondPiece.type,secondPiece.order,'at',secondpos1,secondpos2)
                 Squarelist[firstpos1][firstpos2].addPieces(
                     ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
                                 noside))
                 Squarelist[secondpos1][secondpos2].addPieces(
                     ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
                                 firstPiece.order, firstPiece.side))
+                before = click[0]
                 turn = 1
             if (turn == 1 and click[0].Piece.side == blackside):
                 selectedSquare = click[0]
@@ -304,15 +312,23 @@ def start_game():
                 drawSquare(screen, selectedSquare, orange)
                 firstPiece = click[0].Piece
                 secondPiece = click[1].Piece
-                (firstpos1,firstpos2) = findSquarePosition(Squarelist,click[0])
-                (secondpos1,secondpos2) = findSquarePosition(Squarelist,click[1])
-                Squarelist[firstpos1][firstpos2].addPieces(ChessPieces('Assets\Pieces\whitePawn.png',(firstPiece.rect.left,firstPiece.rect.top),Empty,None,noside))
-                Squarelist[secondpos1][secondpos2].addPieces(ChessPieces(firstPiece.imagefile,(secondPiece.rect.left,secondPiece.rect.top),firstPiece.type,firstPiece.order,firstPiece.side))
+                (firstpos1, firstpos2) = findSquarePosition(Squarelist, click[0])
+                (secondpos1, secondpos2) = findSquarePosition(Squarelist, click[1])
+                if (secondPiece.type != Empty):
+                    print(firstPiece.type, firstPiece.order, 'at', firstpos1, firstpos2, 'eats', secondPiece.type,
+                          secondPiece.order, 'at', secondpos1, secondpos2)
+                Squarelist[firstpos1][firstpos2].addPieces(
+                    ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
+                                noside))
+                Squarelist[secondpos1][secondpos2].addPieces(
+                    ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
+                                firstPiece.order, firstPiece.side))
+                before = click[0]
                 turn = 0
-            lastmove = click[1]
             click.clear()
         #print(turn)
-
+        #if (before != None):
+            #pygame.draw.circle(screen, lightblue, (before.x + 35, before.y + 35), 7)
         check, first,second = evaluateCheck(Squarelist,whiteside)
         if check:
             drawSquare(screen,Squarelist[first][second],purple)
@@ -328,6 +344,8 @@ def start_game():
                     if (len(click) != 0):
                         if (newSquare != click[0]):
                             drawSquare(screen, newSquare, yellow)
+                    else:
+                        drawSquare(screen,newSquare,yellow)
         drawPieces()
         pygame.display.update()
 

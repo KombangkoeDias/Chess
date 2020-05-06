@@ -48,16 +48,16 @@ def BlackPawnMoves(Squarelist,a,b,walkresult,eatresult):
             walkresult.append(Squarelist[a + 1][b])
         if (Squarelist[a + 2][b].Piece.type == Empty):
             walkresult.append(Squarelist[a + 2][b])
-        if (b-1 > -1 and Squarelist[a + 1][b - 1].Piece.type in BlackList):
+        if (b-1 > -1 and Squarelist[a + 1][b - 1].Piece.type in WhiteList):
             eatresult.append(Squarelist[a + 1][b - 1])
-        if (b+1 < 8 and Squarelist[a + 1][b + 1].Piece.type in BlackList):
+        if (b+1 < 8 and Squarelist[a + 1][b + 1].Piece.type in WhiteList):
             eatresult.append(Squarelist[a + 1][b + 1])
     elif (a > 1 and a < 7):
         if (Squarelist[a + 1][b].Piece.type == Empty):
             walkresult.append(Squarelist[a + 1][b])
-        if (b - 1 > -1 and Squarelist[a + 1][b - 1].Piece.type in BlackList):
+        if (b - 1 > -1 and Squarelist[a + 1][b - 1].Piece.type in WhiteList):
             eatresult.append(Squarelist[a + 1][b-1])
-        if (b + 1 < 8 and Squarelist[a + 1][b + 1].Piece.type in BlackList):
+        if (b + 1 < 8 and Squarelist[a + 1][b + 1].Piece.type in WhiteList):
             eatresult.append(Squarelist[a + 1][b + 1])
     return (walkresult,eatresult)
 def KnightMoves(Squarelist,a,b,walkresult,eatresult,type):
