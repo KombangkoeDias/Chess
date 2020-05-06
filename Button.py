@@ -7,6 +7,7 @@ def button(screen, msg, x, y, w, h, ic, ac, action = None):
     Rect = text.get_rect()
     Rect.center = ((x + (w / 2)), (y + h / 2))
     screen.blit(text, Rect)
+    myvalue = None
     if x + w > mouse[0] > x and y + h > mouse[1] > y:
 
         pygame.draw.rect(screen,ac,(x,y,w,h))
@@ -15,7 +16,8 @@ def button(screen, msg, x, y, w, h, ic, ac, action = None):
         Rect = text.get_rect()
         Rect.center = ((x + (w / 2)), (y + h / 2))
         screen.blit(text, Rect)
-        if click[0] == 1 and action != None:
+        if click[0] == 1 and action != None and myvalue == None:
+            myvalue = 1
             action()
             return False
         else:

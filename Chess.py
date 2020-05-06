@@ -3,7 +3,7 @@ import pygame
 from Event import startGame
 from Button import button
 from Background import BackgroundPhoto
-from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck
+from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck,findSquarePosition
 from Piece import ChessPieces, DrawPieces
 
 pygame.init()
@@ -202,7 +202,6 @@ def start_game():
                 """
     chosen = (10, 10)
     click = list()
-    pygame.time.delay(1000)
     while gamePlay:
         for event in pygame.event.get():
             # print(event)
@@ -214,9 +213,6 @@ def start_game():
                 newSquare = Squarelist[i][j]
                 if ((i + j) % 2 == 0):
                     drawSquare(screen, newSquare, newSquare.color)
-                    if (newSquare.choose()):
-                        chosen = (i,j)
-                        drawSquare(screen,newSquare, yellow)
                     if (len(click) ==1 and newSquare.getclick() and ((newSquare in walkresult) or (newSquare in eatresult))):
                         click.append(newSquare)
                         print(click[0].Piece.type, click[0].Piece.order, "move to", i, j)
@@ -239,9 +235,6 @@ def start_game():
                     #Squarelist[i].append(newSquare)
                 else:
                     drawSquare(screen,newSquare,newSquare.color)
-                    if (newSquare.choose()):
-                        chosen = (i,j)
-                        drawSquare(screen,newSquare, yellow)
                     if (len(click) ==1 and newSquare.getclick() and ((newSquare in walkresult) or (newSquare in eatresult))):
                         click.append(newSquare)
                         print(click[0].Piece.type, click[0].Piece.order, "move to", i, j)
@@ -299,8 +292,16 @@ def start_game():
         check,first,second = evaluateCheck(Squarelist,blackside)
         if check:
             drawSquare(screen,Squarelist[first][second],purple)
+
+        for i in range(8):
+            for j in range(8):
+                newSquare = Squarelist[i][j]
+                if (newSquare.choose()):
+                    chosen = (i, j)
+                    drawSquare(screen, newSquare, yellow)
         drawPieces()
         pygame.display.update()
 
 game_intro()
 start_game()
+

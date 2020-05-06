@@ -21,6 +21,13 @@ KingW = 'WhiteKing'
 KingB = 'BlackKing'
 WhiteList = [PawnW,KnightW,BishopW,RookW,QueenW,KingW]
 BlackList = [PawnB,KnightB,BishopB,RookB,QueenB,KingB]
+
+def findSquarePosition(Squarelist,mySquare):
+    for i in range(8):
+        for j in range(8):
+            if (Squarelist[i][j] == mySquare):
+                return (i,j)
+
 def evaluateCheck(Squarelist,side):
     for i in range(8):
         for j in range(8):
