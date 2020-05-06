@@ -1,3 +1,4 @@
+from Piece import ChessPieces
 Empty = 'Empty Space'
 PawnW = 'WhitePawn'
 PawnB = 'BlackPawn'
@@ -317,3 +318,11 @@ def KingMoves(Squarelist,a,b,walkresult,eatresult,side):
                 if (check == 0):
                     walkresult.append(Squarelist[first][second])
     return (walkresult,eatresult)
+def realMoves(movestuple):
+    firstSquare = movestuple[0]
+    secondSquare = movestuple[1]
+    firstPiece = firstSquare.Piece
+    secondPiece = secondSquare.Piece
+    emptyPiece = ChessPieces('Assets\Pieces\whitePawn.png', (0,0),Empty,None,noside)
+    firstSquare.Piece = emptyPiece
+    secondSquare.Piece = firstPiece

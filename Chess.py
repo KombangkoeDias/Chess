@@ -5,7 +5,8 @@ from Button import button
 from Background import BackgroundPhoto
 from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck,findSquarePosition
 from Piece import ChessPieces, DrawPieces
-
+from moves import realMoves
+noside = ''
 pygame.init()
 whiteside = 'White'
 blackside = 'Black'
@@ -122,13 +123,15 @@ def start_game():
     lastmove = None
     for i in range(8):
         for j in range(8):
-
+            """
             if ((i+j) %2 ==0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
+                newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation,Empty,None,noside))
             else:
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, darkgreen)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
+                newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation,Empty,None,noside))
             if (i == 4 and j == 4):
                 newSquare.addPieces(ChessPieces('Assets\Pieces/blackQueen.png', piecelocation, QueenB, 0, blackside))
             if (i == 4 and j == 7):
@@ -145,11 +148,13 @@ def start_game():
                 newSquare.addPieces(ChessPieces('Assets/Pieces/blackKnight.png', piecelocation, KnightB, 1, blackside))
             if (i == 6 and j == 1):
                 newSquare.addPieces(ChessPieces('Assets\Pieces/blackKing.png', piecelocation, KingB, 0, blackside))
+
             Squarelist[i].append(newSquare)
             """
             if ((i + j) % 2 == 0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
+                newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation,Empty,None,noside))
                 if (i == 1):
                     newSquare.addPieces(ChessPieces('Assets/Pieces/blackPawn.png',piecelocation ,PawnB,j,blackside))
                 if (i == 0):
@@ -176,6 +181,7 @@ def start_game():
             else:
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, darkgreen)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
+                newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation,Empty,None,noside))
                 if (i == 1):
                     newSquare.addPieces(ChessPieces('Assets/Pieces/blackPawn.png',piecelocation ,PawnB,j,blackside))
                 if (i == 0):
@@ -199,7 +205,7 @@ def start_game():
                     if (j == 6):
                         newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation ,KnightW,1,whiteside))
                 Squarelist[i].append(newSquare)
-                """
+
     chosen = (10, 10)
     click = list()
     while gamePlay:
@@ -269,8 +275,16 @@ def start_game():
                 for eatSquare in eatresult:
                     drawSquare(screen, eatSquare, red)
                 drawSquare(screen, selectedSquare, orange)
-                moveSquare = click[1]
-                drawSquare(screen, moveSquare, green)
+                firstPiece = click[0].Piece
+                secondPiece = click[1].Piece
+                (firstpos1, firstpos2) = findSquarePosition(Squarelist, click[0])
+                (secondpos1, secondpos2) = findSquarePosition(Squarelist, click[1])
+                Squarelist[firstpos1][firstpos2].addPieces(
+                    ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
+                                noside))
+                Squarelist[secondpos1][secondpos2].addPieces(
+                    ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
+                                firstPiece.order, firstPiece.side))
                 turn = 1
             if (turn == 1 and click[0].Piece.side == blackside):
                 selectedSquare = click[0]
@@ -279,8 +293,12 @@ def start_game():
                 for eatSquare in eatresult:
                     drawSquare(screen, eatSquare, red)
                 drawSquare(screen, selectedSquare, orange)
-                moveSquare = click[1]
-                drawSquare(screen, moveSquare, green)
+                firstPiece = click[0].Piece
+                secondPiece = click[1].Piece
+                (firstpos1,firstpos2) = findSquarePosition(Squarelist,click[0])
+                (secondpos1,secondpos2) = findSquarePosition(Squarelist,click[1])
+                Squarelist[firstpos1][firstpos2].addPieces(ChessPieces('Assets\Pieces\whitePawn.png',(firstPiece.rect.left,firstPiece.rect.top),Empty,None,noside))
+                Squarelist[secondpos1][secondpos2].addPieces(ChessPieces(firstPiece.imagefile,(secondPiece.rect.left,secondPiece.rect.top),firstPiece.type,firstPiece.order,firstPiece.side))
                 turn = 0
             lastmove = click[1]
             click.clear()
