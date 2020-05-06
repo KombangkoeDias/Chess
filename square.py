@@ -1,6 +1,6 @@
 import pygame
 from Piece import ChessPieces
-from moves import WhitePawnMoves,BlackPawnMoves,KnightMoves,BishopMoves
+from moves import WhitePawnMoves,BlackPawnMoves,KnightMoves,BishopMoves,RookMoves,QueenMoves,KingMoves
 def drawSquare(screen,mySquare,ic):
     pygame.draw.rect(screen,ic,(mySquare.x,mySquare.y,mySquare.w,mySquare.h))
 whiteside = 'White'
@@ -67,11 +67,21 @@ class Square:
         if (self.Piece.type == KnightB):
             walkresult,eatresult = KnightMoves(Squarelist,a,b,walkresult,eatresult,KnightB)
         if (self.Piece.type == BishopW):
-            #print(a,b)
             walkresult,eatresult = BishopMoves(Squarelist,a,b,walkresult,eatresult,whiteside)
         if (self.Piece.type == BishopB):
-            #print(a,b)
             walkresult,eatresult = BishopMoves(Squarelist,a,b,walkresult,eatresult,blackside)
+        if (self.Piece.type == RookW):
+            walkresult,eatresult = RookMoves(Squarelist,a,b,walkresult,eatresult,whiteside)
+        if (self.Piece.type == RookB):
+            walkresult,eatresult = RookMoves(Squarelist,a,b,walkresult,eatresult,blackside)
+        if (self.Piece.type == QueenW):
+            walkresult,eatresult = QueenMoves(Squarelist,a,b,walkresult,eatresult,whiteside)
+        if (self.Piece.type == QueenB):
+            walkresult,eatresult = QueenMoves(Squarelist,a,b,walkresult,eatresult,blackside)
+        if (self.Piece.type == KingW):
+            walkresult,eatresult = KingMoves(Squarelist,a,b,walkresult,eatresult,whiteside)
+        if (self.Piece.type == KingB):
+            walkresult,eatresult = KingMoves(Squarelist,a,b,walkresult,eatresult,blackside)
         return (walkresult,eatresult)
 
 

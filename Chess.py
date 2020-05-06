@@ -117,6 +117,30 @@ def start_game():
     screen.blit(GameplayBackground.image, GameplayBackground.rect)
     for i in range(8):
         for j in range(8):
+            if ((i+j) %2 ==0):
+                newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
+                piecelocation = (newSquare.x + 10, newSquare.y + 10)
+            else:
+                newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, darkgreen)
+                piecelocation = (newSquare.x + 10, newSquare.y + 10)
+            if (i == 4 and j == 4):
+                newSquare.addPieces(ChessPieces('Assets\Pieces/blackQueen.png', piecelocation, QueenB, 0, blackside))
+            if (i == 4 and j == 7):
+                newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation, KnightW, 1, whiteside))
+            if (i == 3 and j == 3):
+                newSquare.addPieces(ChessPieces('Assets\Pieces\whiteBishop.png', piecelocation, BishopW, 1, whiteside))
+            if (i == 5 and j == 2):
+                newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation, KnightW, 0, whiteside))
+            if (i == 6 and j == 3):
+                newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKing.png', piecelocation, KingW, 0, whiteside))
+            if (i == 6 and j == 4):
+                newSquare.addPieces(ChessPieces('Assets/Pieces/blackBishop.png', piecelocation, BishopB, 0, blackside))
+            if (i == 5 and j == 4):
+                newSquare.addPieces(ChessPieces('Assets/Pieces/blackKnight.png', piecelocation, KnightB, 1, blackside))
+            if (i == 6 and j == 1):
+                newSquare.addPieces(ChessPieces('Assets\Pieces/blackKing.png', piecelocation, KingB, 0, blackside))
+            Squarelist[i].append(newSquare)
+            """
             if ((i + j) % 2 == 0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
@@ -169,6 +193,7 @@ def start_game():
                     if (j == 6):
                         newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation ,KnightW,1,whiteside))
                 Squarelist[i].append(newSquare)
+                """
     chosen = (10, 10)
     click = list()
     pygame.time.delay(1000)
