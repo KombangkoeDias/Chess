@@ -49,6 +49,8 @@ def evaluateCheck(Squarelist,side):
                                 if (Squarelist[i][j] in walk or Squarelist[i][j] in move):
                                     return (True,i,j)
                     return (False,i,j)
+
+
 class Square:
     def __init__(self,x,y,w,h,ic):
         self.x = x
@@ -112,7 +114,42 @@ class Square:
             walkresult,eatresult = KingMoves(Squarelist,a,b,walkresult,eatresult,blackside)
         return (walkresult,eatresult)
 
-
+    def movenow(self,Squarelist,destination):
+        firstPiece = self.Piece
+        secondPiece = destination.Piece
+        (firstpos1, firstpos2) = findSquarePosition(Squarelist, self)
+        (secondpos1, secondpos2) = findSquarePosition(Squarelist, destination)
+        Squarelist[firstpos1][firstpos2].addPieces(
+            ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
+                        noside))
+        Squarelist[secondpos1][secondpos2].addPieces(
+            ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type, firstPiece.order,firstPiece.side))
+    def checkPossibleMoves(self,Squarelist, walkresult, eatresult,side):
+        newwalkresult = list()
+        neweatresult = list()
+        for walkmove in walkresult:
+            self.movenow(Squarelist,walkmove)
+            value,i,j = evaluateCheck(Squarelist,side)
+            if (not value):
+                newwalkresult.append(walkmove)
+            walkmove.movenow(Squarelist,self)
+        for eatmove in eatresult:
+            firstPiece = self.Piece
+            secondPiece = eatmove.Piece
+            (firstpos1, firstpos2) = findSquarePosition(Squarelist, self)
+            (secondpos1, secondpos2) = findSquarePosition(Squarelist, eatmove)
+            Squarelist[firstpos1][firstpos2].addPieces(
+                ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
+                            noside))
+            Squarelist[secondpos1][secondpos2].addPieces(
+                ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
+                            firstPiece.order, firstPiece.side))
+            value,i,j = evaluateCheck(Squarelist,side)
+            if (not value):
+                neweatresult.append(eatmove)
+            Squarelist[firstpos1][firstpos2].addPieces(firstPiece)
+            Squarelist[secondpos1][secondpos2].addPieces(secondPiece)
+        return (newwalkresult,neweatresult)
 
 
 

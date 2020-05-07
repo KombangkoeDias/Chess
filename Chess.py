@@ -126,7 +126,7 @@ def start_game():
     lastmove = None
     for i in range(8):
         for j in range(8):
-            """
+
             if ((i+j) %2 ==0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
@@ -141,14 +141,14 @@ def start_game():
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation, KnightW, 1, whiteside))
             if (i == 3 and j == 3):
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whiteBishop.png', piecelocation, BishopW, 1, whiteside))
-            if (i == 4 and j == 2):
-                newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation, KnightW, 0, whiteside))
+            #if (i == 4 and j == 2):
+                #newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation, KnightW, 0, whiteside))
             if (i == 6 and j == 3):
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKing.png', piecelocation, KingW, 0, whiteside))
             if (i == 6 and j == 4):
                 newSquare.addPieces(ChessPieces('Assets/Pieces/blackBishop.png', piecelocation, BishopB, 0, blackside))
-            if (i == 5 and j == 5):
-                newSquare.addPieces(ChessPieces('Assets/Pieces/blackKnight.png', piecelocation, KnightB, 1, blackside))
+            #if (i == 5 and j == 5):
+                #newSquare.addPieces(ChessPieces('Assets/Pieces/blackKnight.png', piecelocation, KnightB, 1, blackside))
             if (i == 6 and j == 1):
                 newSquare.addPieces(ChessPieces('Assets\Pieces/blackKing.png', piecelocation, KingB, 0, blackside))
 
@@ -208,7 +208,7 @@ def start_game():
                     if (j == 6):
                         newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation ,KnightW,1,whiteside))
                 Squarelist[i].append(newSquare)
-
+                """
     chosen = (10, 10)
     click = list()
     while gamePlay:
@@ -276,6 +276,10 @@ def start_game():
         if (len(click) == 1):
             selectedSquare = click[0]
             walkresult, eatresult = selectedSquare.evaluatepossiblemoves(Squarelist)
+            if (turn == 1):
+                walkresult, eatresult = selectedSquare.checkPossibleMoves(Squarelist,walkresult,eatresult,blackside)
+            elif (turn == 0):
+                walkresult, eatresult = selectedSquare.checkPossibleMoves(Squarelist,walkresult,eatresult,whiteside)
             for walkSquare in walkresult:
                 pygame.draw.circle(screen, green, (walkSquare.x + 35, walkSquare.y + 35), 7)
             for eatSquare in eatresult:
