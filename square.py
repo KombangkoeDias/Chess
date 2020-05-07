@@ -22,6 +22,34 @@ KingB = 'BlackKing'
 WhiteList = [PawnW,KnightW,BishopW,RookW,QueenW,KingW]
 BlackList = [PawnB,KnightB,BishopB,RookB,QueenB,KingB]
 
+def evaluatelose(Squarelist,side):
+    value = 0
+    ischeck = False
+    if (side == whiteside):
+        for k in range(8):
+            for l in range(8):
+                if (Squarelist[k][l].Piece.side == whiteside):
+                    walkresult,eatresult = Squarelist[k][l].evaluatepossiblemoves(Squarelist)
+                    walkresult,eatresult = Squarelist[k][l].checkPossibleMoves(Squarelist,walkresult,eatresult,whiteside)
+                    value += len(walkresult)
+                    value += len(eatresult)
+        if (value == 0):
+            return True
+        else:
+            return False
+    else:
+        for k in range(8):
+            for l in range(8):
+                if (Squarelist[k][l].Piece.side == blackside):
+                    walkresult, eatresult = Squarelist[k][l].evaluatepossiblemoves(Squarelist)
+                    walkresult, eatresult = Squarelist[k][l].checkPossibleMoves(Squarelist, walkresult, eatresult,blackside)
+                    value += len(walkresult)
+                    value += len(eatresult)
+        if (value == 0):
+            return True
+        else:
+            return False
+
 def findSquarePosition(Squarelist,mySquare):
     for i in range(8):
         for j in range(8):

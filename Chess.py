@@ -3,9 +3,8 @@ import pygame
 from Event import startGame
 from Button import button
 from Background import BackgroundPhoto
-from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck,findSquarePosition
+from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck,findSquarePosition,evaluatelose
 from Piece import ChessPieces, DrawPieces
-from moves import realMoves
 noside = ''
 pygame.init()
 whiteside = 'White'
@@ -61,7 +60,6 @@ def game_intro():
         intro = button(screen, "Start", Width // 2 - 100, Height // 2 + 50, 150, 40, vegasgold, gold, startGame)
         button(screen,"Quit",Width//2-100,Height//2+120,150,40,red,tomago,quit)
         pygame.display.update()
-        clock.tick(15)
 # infinite loop
 
 GameplayBackground = BackgroundPhoto('Assets\Horses.jpg',[0,0])
@@ -336,10 +334,17 @@ def start_game():
         check, first,second = evaluateCheck(Squarelist,whiteside)
         if check:
             drawSquare(screen,Squarelist[first][second],purple)
+            if evaluatelose(Squarelist, whiteside):
+                print('White loses')
         check,first,second = evaluateCheck(Squarelist,blackside)
         if check:
             drawSquare(screen,Squarelist[first][second],purple)
-
+            if evaluatelose(Squarelist,blackside):
+                print('Black loses')
+        #if evaluatelose(Squarelist,whiteside):
+            #print('White loses')
+        #if evaluatelose(Squarelist,blackside):
+            #print('Black loses')
         for i in range(8):
             for j in range(8):
                 newSquare = Squarelist[i][j]

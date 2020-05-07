@@ -1,4 +1,3 @@
-from Piece import ChessPieces
 Empty = 'Empty Space'
 PawnW = 'WhitePawn'
 PawnB = 'BlackPawn'
@@ -19,6 +18,31 @@ whiteside = 'White'
 blackside = 'Black'
 
 import pygame
+
+
+
+def evaluateCheck(Squarelist,side):
+    for i in range(8):
+        for j in range(8):
+            if side == whiteside:
+                if (Squarelist[i][j].Piece.type == KingW):
+                    for k in range(8):
+                        for l in range(8):
+                            if (Squarelist[k][l].Piece.side != side and Squarelist[k][l].Piece.type != KingW and Squarelist[k][l].Piece.type != KingB):
+                                walk,move = Squarelist[k][l].evaluatepossiblemoves(Squarelist)
+                                if (Squarelist[i][j] in walk or Squarelist[i][j] in move):
+                                    return (True,i,j,k,l)
+                    return (False,i,j)
+            if side == blackside:
+                if (Squarelist[i][j].Piece.type == KingB):
+                    for k in range(8):
+                        for l in range(8):
+                            if (Squarelist[k][l].Piece.side != side and Squarelist[k][l].Piece.type != KingW and Squarelist[k][l].Piece.type != KingB):
+                                walk,move = Squarelist[k][l].evaluatepossiblemoves(Squarelist)
+                                if (Squarelist[i][j] in walk or Squarelist[i][j] in move):
+                                    return (True,i,j,k,l)
+                    return (False,i,j)
+
 def checkPosition(move):
     if (move[0] > -1 and move[0] < 8 and move[1] > -1 and move[1] < 8):
         return True
@@ -318,11 +342,4 @@ def KingMoves(Squarelist,a,b,walkresult,eatresult,side):
                 if (check == 0):
                     walkresult.append(Squarelist[first][second])
     return (walkresult,eatresult)
-def realMoves(movestuple):
-    firstSquare = movestuple[0]
-    secondSquare = movestuple[1]
-    firstPiece = firstSquare.Piece
-    secondPiece = secondSquare.Piece
-    emptyPiece = ChessPieces('Assets\Pieces\whitePawn.png', (0,0),Empty,None,noside)
-    firstSquare.Piece = emptyPiece
-    secondSquare.Piece = firstPiece
+
