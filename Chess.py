@@ -1,6 +1,6 @@
 import pygame
 
-from Event import startGame
+from Event import startGame,drawmovesline
 from Button import button
 from Background import BackgroundPhoto
 from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck,findSquarePosition,evaluatelose
@@ -209,6 +209,8 @@ def start_game():
                 """
     chosen = (10, 10)
     click = list()
+    firstSquare = None
+    secondSquare = None
     while gamePlay:
         for event in pygame.event.get():
             # print(event)
@@ -284,6 +286,8 @@ def start_game():
                 drawSquare(screen, eatSquare, red)
             drawSquare(screen,selectedSquare,orange)
         if (len(click) == 2):
+            firstSquare = click[0]
+            secondSquare = click[1]
             if (turn == 0 and click[0].Piece.side == whiteside):
                 selectedSquare = click[0]
                 for walkSquare in walkresult:
@@ -355,6 +359,8 @@ def start_game():
                             drawSquare(screen, newSquare, yellow)
                     else:
                         drawSquare(screen,newSquare,yellow)
+        if (firstSquare != None and secondSquare != None):
+            drawmovesline(screen,firstSquare,secondSquare,lightblue,5)
         drawPieces()
         pygame.display.update()
 
