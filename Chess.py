@@ -338,11 +338,12 @@ def start_game():
                     whitekingMove = True
                 if (click[0].Piece.type == RookW and click[0].Piece.order == 0):
                     whiterook0move = True
-                    print("whiterook0 moves")
+                    #print("whiterook0 moves")
                 if (click[0].Piece.type == RookW and click[0].Piece.order == 1):
                     whiterook1move = True
-                    print("whiterook1 moves")
-                if (click[0].Piece.type == KingW and findSquarePosition(Squarelist,click[0]) == (7,4) and findSquarePosition(Squarelist,click[1]) == (7,6) and not whiterook1move):
+                    #print("whiterook1 moves")
+                if (click[0].Piece.type == KingW and findSquarePosition(Squarelist,click[0]) == (7,4) and findSquarePosition(Squarelist,click[1]) == (7,6) and not whiterook1move
+                    and Squarelist[7][7].Piece.type == RookW and Squarelist[7][7].Piece.order == 1):
                     Squarelist[7][4].addPieces(
                         ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty,
                                     None,
@@ -399,7 +400,8 @@ def start_game():
                     blackrook1move = True
                     print("blackrook1 moves")
 
-                if (click[0].Piece.type == KingB and findSquarePosition(Squarelist,click[0]) == (0,4) and findSquarePosition(Squarelist,click[1]) == (0,6) and not blackrook1move):
+                if (click[0].Piece.type == KingB and findSquarePosition(Squarelist,click[0]) == (0,4) and findSquarePosition(Squarelist,click[1]) == (0,6) and not blackrook1move
+                    and Squarelist[0][7].Piece.type == RookB and Squarelist[0][7].Piece.order == 1):
                     Squarelist[0][4].addPieces(ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
                                 noside))
                     animation(Squarelist,screen,(firstPiece.rect.left, firstPiece.rect.top),(Squarelist[0][6].Piece.rect.left,Squarelist[0][6].Piece.rect.top),firstPiece)
