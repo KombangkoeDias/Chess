@@ -221,7 +221,15 @@ def start_game():
     #animate = False
     #firstPiece = None
     #secondPiece = None
+    whitekingMove = False
+    blackkingMove = False
+    whiterook0move = False
+    whiterook1move = False
+    blackrook0move = False
+    blackrook1move = False
     while gamePlay:
+        whiterookmove = (whiterook0move,whiterook1move)
+        blackrookmove = (blackrook0move,blackrook1move)
         screen.blit(GameplayBackground.image,GameplayBackground.rect)
         for event in pygame.event.get():
             # print(event)
@@ -286,11 +294,12 @@ def start_game():
         #print(len(click))
         if (len(click) == 1):
             selectedSquare = click[0]
-            walkresult, eatresult = selectedSquare.evaluatepossiblemoves(Squarelist,(firstSquare,secondSquare))
             if (turn == 1):
-                walkresult, eatresult = selectedSquare.checkPossibleMoves(Squarelist,walkresult,eatresult,blackside,(firstSquare,secondSquare))
+                walkresult, eatresult = selectedSquare.evaluatepossiblemoves(Squarelist, (firstSquare, secondSquare),blackkingMove)
+                walkresult, eatresult = selectedSquare.checkPossibleMoves(Squarelist,walkresult,eatresult,blackside,(firstSquare,secondSquare),blackkingMove)
             elif (turn == 0):
-                walkresult, eatresult = selectedSquare.checkPossibleMoves(Squarelist,walkresult,eatresult,whiteside,(firstSquare,secondSquare))
+                walkresult, eatresult = selectedSquare.evaluatepossiblemoves(Squarelist, (firstSquare, secondSquare),whitekingMove)
+                walkresult, eatresult = selectedSquare.checkPossibleMoves(Squarelist,walkresult,eatresult,whiteside,(firstSquare,secondSquare),whitekingMove)
             for walkSquare in walkresult:
                 pygame.draw.circle(screen, green, (walkSquare.x + 35, walkSquare.y + 35), 7)
             for eatSquare in eatresult:
@@ -325,16 +334,40 @@ def start_game():
                 (secondpos1, secondpos2) = findSquarePosition(Squarelist, click[1])
                 if (secondPiece.type != Empty):
                     print(firstPiece.type,firstPiece.order,'at',firstpos1,firstpos2,'eats',secondPiece.type,secondPiece.order,'at',secondpos1,secondpos2)
-
-
-                Squarelist[firstpos1][firstpos2].addPieces(
-                    ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
-                                noside))
-                animation(Squarelist,screen,(firstPiece.rect.left, firstPiece.rect.top),(secondPiece.rect.left, secondPiece.rect.top),firstPiece)
-                #animate = True
-                Squarelist[secondpos1][secondpos2].addPieces(
-                    ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
-                                firstPiece.order, firstPiece.side))
+                if (click[0].Piece.type == KingW):
+                    whitekingMove = True
+                if (click[0].Piece.type == RookW and click[0].Piece.order == 0):
+                    whiterook0move = True
+                    print("whiterook0 moves")
+                if (click[0].Piece.type == RookW and click[0].Piece.order == 1):
+                    whiterook1move = True
+                    print("whiterook1 moves")
+                if (click[0].Piece.type == KingW and findSquarePosition(Squarelist,click[0]) == (7,4) and findSquarePosition(Squarelist,click[1]) == (7,6) and not whiterook1move):
+                    Squarelist[7][4].addPieces(
+                        ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty,
+                                    None,
+                                    noside))
+                    animation(Squarelist,screen,(firstPiece.rect.left, firstPiece.rect.top),(Squarelist[7][6].Piece.rect.left,Squarelist[7][6].Piece.rect.top),firstPiece)
+                    Squarelist[7][6].addPieces(
+                        ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top),
+                                    firstPiece.type,
+                                    firstPiece.order, firstPiece.side))
+                    Squarelist[7][5].addPieces(ChessPieces(Squarelist[7][7].Piece.imagefile, (
+                    Squarelist[7][5].Piece.rect.left, Squarelist[7][5].Piece.rect.top), Squarelist[7][7].Piece.type,
+                                                           Squarelist[7][7].Piece.order, Squarelist[7][7].Piece.side))
+                    Squarelist[7][7].addPieces(
+                        ChessPieces('Assets\Pieces\whitePawn.png',
+                                    (Squarelist[7][7].Piece.rect.left, Squarelist[7][7].Piece.rect.top), Empty, None,
+                                    noside))
+                else:
+                    Squarelist[firstpos1][firstpos2].addPieces(
+                        ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
+                                    noside))
+                    animation(Squarelist,screen,(firstPiece.rect.left, firstPiece.rect.top),(secondPiece.rect.left, secondPiece.rect.top),firstPiece)
+                    #animate = True
+                    Squarelist[secondpos1][secondpos2].addPieces(
+                        ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
+                                    firstPiece.order, firstPiece.side))
 
 
                 before = click[0]
@@ -356,14 +389,37 @@ def start_game():
                 if (secondPiece.type != Empty):
                     print(firstPiece.type, firstPiece.order, 'at', firstpos1, firstpos2, 'eats', secondPiece.type,
                           secondPiece.order, 'at', secondpos1, secondpos2)
-                Squarelist[firstpos1][firstpos2].addPieces(
-                    ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
-                                noside))
-                animation(Squarelist,screen,(firstPiece.rect.left, firstPiece.rect.top),(secondPiece.rect.left, secondPiece.rect.top),firstPiece)
+                if (click[0].Piece.type == KingB):
+                    blackkingMove = True
+                if (click[0].Piece.type == RookB and click[0].Piece.order == 0):
+                    blackrook0move = True
+                    print("blackrook0 moves")
 
-                Squarelist[secondpos1][secondpos2].addPieces(
-                    ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
+                if (click[0].Piece.type == RookB and click[0].Piece.order == 1):
+                    blackrook1move = True
+                    print("blackrook1 moves")
+
+                if (click[0].Piece.type == KingB and findSquarePosition(Squarelist,click[0]) == (0,4) and findSquarePosition(Squarelist,click[1]) == (0,6) and not blackrook1move):
+                    Squarelist[0][4].addPieces(ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
+                                noside))
+                    animation(Squarelist,screen,(firstPiece.rect.left, firstPiece.rect.top),(Squarelist[0][6].Piece.rect.left,Squarelist[0][6].Piece.rect.top),firstPiece)
+                    Squarelist[0][6].addPieces(ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
                                 firstPiece.order, firstPiece.side))
+                    Squarelist[0][5].addPieces(ChessPieces(Squarelist[0][7].Piece.imagefile,(Squarelist[0][5].Piece.rect.left,Squarelist[0][5].Piece.rect.top), Squarelist[0][7].Piece.type,
+                                               Squarelist[0][7].Piece.order,Squarelist[0][7].Piece.side))
+                    print(Squarelist[0][7].Piece.type)
+                    Squarelist[0][7].addPieces(
+                        ChessPieces('Assets\Pieces\whitePawn.png', (Squarelist[0][7].Piece.rect.left, Squarelist[0][7].Piece.rect.top), Empty,None,noside))
+
+                else:
+                    Squarelist[firstpos1][firstpos2].addPieces(
+                        ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
+                                    noside))
+                    animation(Squarelist,screen,(firstPiece.rect.left, firstPiece.rect.top),(secondPiece.rect.left, secondPiece.rect.top),firstPiece)
+
+                    Squarelist[secondpos1][secondpos2].addPieces(
+                        ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
+                                    firstPiece.order, firstPiece.side))
 
 
                 before = click[0]
@@ -377,6 +433,7 @@ def start_game():
                 #print(Squarelist[position[0]][position[1]].Piece.type)
             firstSquare = click[0]
             secondSquare = click[1]
+
             click.clear()
         if (position != None and position[0] == 0 and Squarelist[position[0]][position[1]].Piece.type == PawnW):
             changeTurn = False
@@ -408,15 +465,15 @@ def start_game():
         #print(turn)
         #if (before != None):
             #pygame.draw.circle(screen, lightblue, (before.x + 35, before.y + 35), 7)
-        check, first,second = evaluateCheck(Squarelist,whiteside,(firstSquare,secondSquare))
+        check, first,second = evaluateCheck(Squarelist,whiteside,(firstSquare,secondSquare),whitekingMove)
         if check:
             drawSquare(screen,Squarelist[first][second],purple)
-            if evaluatelose(Squarelist, whiteside,(firstSquare,secondSquare)):
+            if evaluatelose(Squarelist, whiteside,(firstSquare,secondSquare),whitekingMove):
                 print('White loses')
-        check,first,second = evaluateCheck(Squarelist,blackside,(firstSquare,secondSquare))
+        check,first,second = evaluateCheck(Squarelist,blackside,(firstSquare,secondSquare),blackkingMove)
         if check:
             drawSquare(screen,Squarelist[first][second],purple)
-            if evaluatelose(Squarelist,blackside,(firstSquare,secondSquare)):
+            if evaluatelose(Squarelist,blackside,(firstSquare,secondSquare),blackkingMove):
                 print('Black loses')
         if (len(click) == 1):
             selectedSquare = click[0]

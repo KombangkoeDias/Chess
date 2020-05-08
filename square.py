@@ -22,15 +22,15 @@ KingB = 'BlackKing'
 WhiteList = [PawnW,KnightW,BishopW,RookW,QueenW,KingW]
 BlackList = [PawnB,KnightB,BishopB,RookB,QueenB,KingB]
 
-def evaluatelose(Squarelist,side,lastmove):
+def evaluatelose(Squarelist,side,lastmove,kingmove):
     value = 0
     ischeck = False
     if (side == whiteside):
         for k in range(8):
             for l in range(8):
                 if (Squarelist[k][l].Piece.side == whiteside):
-                    walkresult,eatresult = Squarelist[k][l].evaluatepossiblemoves(Squarelist,lastmove)
-                    walkresult,eatresult = Squarelist[k][l].checkPossibleMoves(Squarelist,walkresult,eatresult,whiteside,lastmove)
+                    walkresult,eatresult = Squarelist[k][l].evaluatepossiblemoves(Squarelist,lastmove,kingmove)
+                    walkresult,eatresult = Squarelist[k][l].checkPossibleMoves(Squarelist,walkresult,eatresult,whiteside,lastmove,kingmove)
                     value += len(walkresult)
                     value += len(eatresult)
         if (value == 0):
@@ -41,8 +41,8 @@ def evaluatelose(Squarelist,side,lastmove):
         for k in range(8):
             for l in range(8):
                 if (Squarelist[k][l].Piece.side == blackside):
-                    walkresult, eatresult = Squarelist[k][l].evaluatepossiblemoves(Squarelist,lastmove)
-                    walkresult, eatresult = Squarelist[k][l].checkPossibleMoves(Squarelist, walkresult, eatresult,blackside,lastmove)
+                    walkresult, eatresult = Squarelist[k][l].evaluatepossiblemoves(Squarelist,lastmove,kingmove)
+                    walkresult, eatresult = Squarelist[k][l].checkPossibleMoves(Squarelist, walkresult, eatresult,blackside,lastmove,kingmove)
                     value += len(walkresult)
                     value += len(eatresult)
         if (value == 0):
@@ -56,7 +56,7 @@ def findSquarePosition(Squarelist,mySquare):
             if (Squarelist[i][j] == mySquare):
                 return (i,j)
 
-def evaluateCheck(Squarelist,side,lastmove):
+def evaluateCheck(Squarelist,side,lastmove,kingmove):
     for i in range(8):
         for j in range(8):
             if side == whiteside:
@@ -64,7 +64,7 @@ def evaluateCheck(Squarelist,side,lastmove):
                     for k in range(8):
                         for l in range(8):
                             if (Squarelist[k][l].Piece.side != side and Squarelist[k][l].Piece.type != KingW and Squarelist[k][l].Piece.type != KingB):
-                                walk,move = Squarelist[k][l].evaluatepossiblemoves(Squarelist,lastmove)
+                                walk,move = Squarelist[k][l].evaluatepossiblemoves(Squarelist,lastmove,kingmove)
                                 if (Squarelist[i][j] in walk or Squarelist[i][j] in move):
                                     return (True,i,j)
                     return (False,i,j)
@@ -73,7 +73,7 @@ def evaluateCheck(Squarelist,side,lastmove):
                     for k in range(8):
                         for l in range(8):
                             if (Squarelist[k][l].Piece.side != side and Squarelist[k][l].Piece.type != KingW and Squarelist[k][l].Piece.type != KingB):
-                                walk,move = Squarelist[k][l].evaluatepossiblemoves(Squarelist,lastmove)
+                                walk,move = Squarelist[k][l].evaluatepossiblemoves(Squarelist,lastmove,kingmove)
                                 if (Squarelist[i][j] in walk or Squarelist[i][j] in move):
                                     return (True,i,j)
                     return (False,i,j)
@@ -108,7 +108,7 @@ class Square:
                 return False
     def addPieces(self,Piece):
         self.Piece = Piece
-    def evaluatepossiblemoves(self,Squarelist,lastmove):
+    def evaluatepossiblemoves(self,Squarelist,lastmove,kingmove):
         walkresult = list()
         eatresult = list()
         for i in range(8):
@@ -137,9 +137,9 @@ class Square:
         if (self.Piece.type == QueenB):
             walkresult,eatresult = QueenMoves(Squarelist,a,b,walkresult,eatresult,blackside)
         if (self.Piece.type == KingW):
-            walkresult,eatresult = KingMoves(Squarelist,a,b,walkresult,eatresult,whiteside,lastmove)
+            walkresult,eatresult = KingMoves(Squarelist,a,b,walkresult,eatresult,whiteside,lastmove,kingmove)
         if (self.Piece.type == KingB):
-            walkresult,eatresult = KingMoves(Squarelist,a,b,walkresult,eatresult,blackside,lastmove)
+            walkresult,eatresult = KingMoves(Squarelist,a,b,walkresult,eatresult,blackside,lastmove,kingmove)
         return (walkresult,eatresult)
 
     def movenow(self,Squarelist,destination):
@@ -152,12 +152,12 @@ class Square:
                         noside))
         Squarelist[secondpos1][secondpos2].addPieces(
             ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type, firstPiece.order,firstPiece.side))
-    def checkPossibleMoves(self,Squarelist, walkresult, eatresult,side,lastmove):
+    def checkPossibleMoves(self,Squarelist, walkresult, eatresult,side,lastmove,kingmove):
         newwalkresult = list()
         neweatresult = list()
         for walkmove in walkresult:
             self.movenow(Squarelist,walkmove)
-            value,i,j = evaluateCheck(Squarelist,side,lastmove)
+            value,i,j = evaluateCheck(Squarelist,side,lastmove,kingmove)
             if (not value):
                 newwalkresult.append(walkmove)
             walkmove.movenow(Squarelist,self)
@@ -172,7 +172,7 @@ class Square:
             Squarelist[secondpos1][secondpos2].addPieces(
                 ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
                             firstPiece.order, firstPiece.side))
-            value,i,j = evaluateCheck(Squarelist,side,lastmove)
+            value,i,j = evaluateCheck(Squarelist,side,lastmove,kingmove)
             if (not value):
                 neweatresult.append(eatmove)
             Squarelist[firstpos1][firstpos2].addPieces(firstPiece)
