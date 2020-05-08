@@ -124,7 +124,7 @@ def start_game():
     lastmove = None
     for i in range(8):
         for j in range(8):
-            """
+
             if ((i+j) %2 ==0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
@@ -149,7 +149,10 @@ def start_game():
                 #newSquare.addPieces(ChessPieces('Assets/Pieces/blackKnight.png', piecelocation, KnightB, 1, blackside))
             if (i == 6 and j == 1):
                 newSquare.addPieces(ChessPieces('Assets\Pieces/blackKing.png', piecelocation, KingB, 0, blackside))
-
+            if (i == 1 and j == 5):
+                newSquare.addPieces(ChessPieces('Assets/Pieces/blackRook.png', piecelocation, RookB, 0, blackside))
+            if (i == 3 and j == 4):
+                newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation, PawnW, j, whiteside))
             Squarelist[i].append(newSquare)
             """
             if ((i + j) % 2 == 0):
@@ -206,7 +209,7 @@ def start_game():
                     if (j == 6):
                         newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation ,KnightW,1,whiteside))
                 Squarelist[i].append(newSquare)
-
+                """
     chosen = (10, 10)
     click = list()
     firstSquare = None

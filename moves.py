@@ -55,15 +55,16 @@ def checkPosition(move):
 def WhitePawnMoves(Squarelist,a,b,walkresult,eatresult,lastmove):
     firstSquare = lastmove[0]
     secondSquare = lastmove[1]
-    firstposition = findSquarePosition(Squarelist,firstSquare)
-    secondposition = findSquarePosition(Squarelist,secondSquare)
-    if (a == 3):
-        #print(firstposition[0],secondposition[0])
-        if (firstposition[0] == 1 and secondposition[0] == 3 ):
-            #print(b,b+1,b-1,firstposition[1])
-            if (firstposition[1] == b+1 or firstposition[1] == b-1):
-                #print('append')
-                eatresult.append(Squarelist[2][firstposition[1]])
+    if (firstSquare != None and secondSquare != None ):
+        firstposition = findSquarePosition(Squarelist,firstSquare)
+        secondposition = findSquarePosition(Squarelist,secondSquare)
+        if (a == 3 and Squarelist[secondposition[0]][secondposition[1]].Piece.type == PawnB):
+            #print(firstposition[0],secondposition[0])
+            if (firstposition[0] == 1 and secondposition[0] == 3 ):
+                #print(b,b+1,b-1,firstposition[1])
+                if (firstposition[1] == b+1 or firstposition[1] == b-1):
+                    #print('append')
+                    eatresult.append(Squarelist[2][firstposition[1]])
     if (a == 6):
         if (Squarelist[a - 1][b].Piece.type == Empty):
             walkresult.append(Squarelist[a - 1][b])
@@ -84,12 +85,13 @@ def WhitePawnMoves(Squarelist,a,b,walkresult,eatresult,lastmove):
 def BlackPawnMoves(Squarelist,a,b,walkresult,eatresult,lastmove):
     firstSquare = lastmove[0]
     secondSquare = lastmove[1]
-    firstposition = findSquarePosition(Squarelist,firstSquare)
-    secondposition = findSquarePosition(Squarelist,secondSquare)
-    if (a == 4):
-        if (firstposition[0] == 6 and secondposition[0] == 4):
-            if (firstposition[1] == b + 1 or firstposition[1] == b - 1):
-                eatresult.append(Squarelist[5][firstposition[1]])
+    if (firstSquare != None and secondSquare != None):
+        firstposition = findSquarePosition(Squarelist,firstSquare)
+        secondposition = findSquarePosition(Squarelist,secondSquare)
+        if (a == 4 and Squarelist[secondposition[0]][secondposition[1]].Piece.type == PawnW):
+            if (firstposition[0] == 6 and secondposition[0] == 4):
+                if (firstposition[1] == b + 1 or firstposition[1] == b - 1):
+                    eatresult.append(Squarelist[5][firstposition[1]])
     if (a == 1):
         if (Squarelist[a + 1][b].Piece.type == Empty):
             walkresult.append(Squarelist[a + 1][b])
