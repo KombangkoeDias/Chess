@@ -124,7 +124,7 @@ def start_game():
     lastmove = None
     for i in range(8):
         for j in range(8):
-
+            """
             if ((i+j) %2 ==0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
@@ -206,7 +206,7 @@ def start_game():
                     if (j == 6):
                         newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation ,KnightW,1,whiteside))
                 Squarelist[i].append(newSquare)
-                """
+
     chosen = (10, 10)
     click = list()
     firstSquare = None
@@ -275,19 +275,26 @@ def start_game():
         #print(len(click))
         if (len(click) == 1):
             selectedSquare = click[0]
-            walkresult, eatresult = selectedSquare.evaluatepossiblemoves(Squarelist)
+            walkresult, eatresult = selectedSquare.evaluatepossiblemoves(Squarelist,(firstSquare,secondSquare))
             if (turn == 1):
-                walkresult, eatresult = selectedSquare.checkPossibleMoves(Squarelist,walkresult,eatresult,blackside)
+                walkresult, eatresult = selectedSquare.checkPossibleMoves(Squarelist,walkresult,eatresult,blackside,(firstSquare,secondSquare))
             elif (turn == 0):
-                walkresult, eatresult = selectedSquare.checkPossibleMoves(Squarelist,walkresult,eatresult,whiteside)
+                walkresult, eatresult = selectedSquare.checkPossibleMoves(Squarelist,walkresult,eatresult,whiteside,(firstSquare,secondSquare))
             for walkSquare in walkresult:
                 pygame.draw.circle(screen, green, (walkSquare.x + 35, walkSquare.y + 35), 7)
             for eatSquare in eatresult:
                 drawSquare(screen, eatSquare, red)
-            drawSquare(screen,selectedSquare,orange)
+
         if (len(click) == 2):
-            firstSquare = click[0]
-            secondSquare = click[1]
+            if (firstSquare != None and secondSquare != None):
+                position = findSquarePosition(Squarelist,secondSquare)
+                anotherSquare = click[1]
+                anotherposition = findSquarePosition(Squarelist,anotherSquare)
+                if (position[0]-1 == anotherposition[0] and position[1] == anotherposition[1]):
+                    Squarelist[position[0]][position[1]].addPieces(
+                        ChessPieces('Assets\Pieces\whitePawn.png', (secondSquare.Piece.rect.left, secondSquare.Piece.rect.top), Empty,
+                                    None,
+                                    noside))
             if (turn == 0 and click[0].Piece.side == whiteside):
                 selectedSquare = click[0]
                 for walkSquare in walkresult:
@@ -301,12 +308,14 @@ def start_game():
                 (secondpos1, secondpos2) = findSquarePosition(Squarelist, click[1])
                 if (secondPiece.type != Empty):
                     print(firstPiece.type,firstPiece.order,'at',firstpos1,firstpos2,'eats',secondPiece.type,secondPiece.order,'at',secondpos1,secondpos2)
+
                 Squarelist[firstpos1][firstpos2].addPieces(
                     ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
                                 noside))
                 Squarelist[secondpos1][secondpos2].addPieces(
                     ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
                                 firstPiece.order, firstPiece.side))
+
                 before = click[0]
                 turn = 1
             if (turn == 1 and click[0].Piece.side == blackside):
@@ -329,22 +338,29 @@ def start_game():
                 Squarelist[secondpos1][secondpos2].addPieces(
                     ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
                                 firstPiece.order, firstPiece.side))
+
+
                 before = click[0]
                 turn = 0
+            firstSquare = click[0]
+            secondSquare = click[1]
             click.clear()
         #print(turn)
         #if (before != None):
             #pygame.draw.circle(screen, lightblue, (before.x + 35, before.y + 35), 7)
-        check, first,second = evaluateCheck(Squarelist,whiteside)
+        check, first,second = evaluateCheck(Squarelist,whiteside,(firstSquare,secondSquare))
         if check:
             drawSquare(screen,Squarelist[first][second],purple)
-            if evaluatelose(Squarelist, whiteside):
+            if evaluatelose(Squarelist, whiteside,(firstSquare,secondSquare)):
                 print('White loses')
-        check,first,second = evaluateCheck(Squarelist,blackside)
+        check,first,second = evaluateCheck(Squarelist,blackside,(firstSquare,secondSquare))
         if check:
             drawSquare(screen,Squarelist[first][second],purple)
-            if evaluatelose(Squarelist,blackside):
+            if evaluatelose(Squarelist,blackside,(firstSquare,secondSquare)):
                 print('Black loses')
+        if (len(click) == 1):
+            selectedSquare = click[0]
+            drawSquare(screen, selectedSquare, orange)
         #if evaluatelose(Squarelist,whiteside):
             #print('White loses')
         #if evaluatelose(Squarelist,blackside):
