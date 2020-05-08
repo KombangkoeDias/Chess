@@ -11,6 +11,9 @@ class ChessPieces:
         self.type = type
         self.side = side
         self.order = order
+    def addlocation(self,location):
+        self.rect.left,self.rect.top = location
+        return self
 def DrawPieces(screen,Square):
     screen.blit(Square.Piece.image,Square.Piece.rect)
 def DrawPawnPieces(screen, PawnList, side):

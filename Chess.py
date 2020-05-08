@@ -1,6 +1,6 @@
 import pygame
 
-from Event import startGame,drawmovesline
+from Event import startGame,drawmovesline,drawChoose
 from Button import button
 from Background import BackgroundPhoto
 from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck,findSquarePosition,evaluatelose
@@ -124,7 +124,7 @@ def start_game():
     lastmove = None
     for i in range(8):
         for j in range(8):
-            """
+
             if ((i+j) %2 ==0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
@@ -153,6 +153,8 @@ def start_game():
                 newSquare.addPieces(ChessPieces('Assets/Pieces/blackRook.png', piecelocation, RookB, 0, blackside))
             if (i == 3 and j == 4):
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation, PawnW, j, whiteside))
+            if (i == 6 and j == 5):
+                newSquare.addPieces(ChessPieces('Assets/Pieces/blackPawn.png', piecelocation, PawnB, j, blackside))
             Squarelist[i].append(newSquare)
             """
             if ((i + j) % 2 == 0):
@@ -209,12 +211,15 @@ def start_game():
                     if (j == 6):
                         newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation ,KnightW,1,whiteside))
                 Squarelist[i].append(newSquare)
-
+                """
     chosen = (10, 10)
     click = list()
     firstSquare = None
     secondSquare = None
+    position = None
+    changeTurn = True
     while gamePlay:
+        screen.blit(GameplayBackground.image,GameplayBackground.rect)
         for event in pygame.event.get():
             # print(event)
             if event.type == pygame.QUIT:
@@ -240,7 +245,7 @@ def start_game():
                                 if (newSquare != lastmove):
                                     click.append(newSquare)
                                     # print(i,j)
-                                    print(newSquare.Piece.type,newSquare.Piece.order)
+                                    #print(newSquare.Piece.type,newSquare.Piece.order)
 
 
                     """
@@ -267,7 +272,7 @@ def start_game():
                                 if (newSquare != lastmove):
                                     click.append(newSquare)
                                     # print(i,j)
-                                    print(newSquare.Piece.type, newSquare.Piece.order)
+                                    #print(newSquare.Piece.type, newSquare.Piece.order)
                     """
                     if (len(click) == 2 and newSquare.getclick() and ((newSquare in walkresult) or newSquare in eatresult)):
                         if (newSquare != click[1]):
@@ -325,8 +330,12 @@ def start_game():
                     ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
                                 firstPiece.order, firstPiece.side))
 
+
                 before = click[0]
-                turn = 1
+                if (changeTurn):
+                    turn = 1
+                else:
+                    turn = 2
             if (turn == 1 and click[0].Piece.side == blackside):
                 selectedSquare = click[0]
                 for walkSquare in walkresult:
@@ -350,10 +359,44 @@ def start_game():
 
 
                 before = click[0]
-                turn = 0
+                if (changeTurn):
+                    turn = 0
+                else:
+                    turn = 2
+
+            position = findSquarePosition(Squarelist, click[1])
+                #print(position[0], position[1])
+                #print(Squarelist[position[0]][position[1]].Piece.type)
             firstSquare = click[0]
             secondSquare = click[1]
             click.clear()
+        if (position != None and position[0] == 0 and Squarelist[position[0]][position[1]].Piece.type == PawnW):
+            changeTurn = False
+            turn = 2
+            #print('white in!')
+            mylist = drawChoose(screen,whiteside)
+            for chooseSquare in mylist:
+                if chooseSquare.choose():
+                    drawSquare(screen,chooseSquare,yellow)
+                    screen.blit(chooseSquare.Piece.image,chooseSquare.Piece.rect)
+                if chooseSquare.getclick():
+                    Squarelist[position[0]][position[1]].addPieces(chooseSquare.Piece.addlocation((Squarelist[position[0]][position[1]].x+10,Squarelist[position[0]][position[1]].y+10)))
+                    changeTurn = True
+                    turn = 1
+        elif (position != None and position[0] == 7 and Squarelist[position[0]][position[1]].Piece.type == PawnB):
+            changeTurn = False
+            turn = 2
+            #print('black in!')
+            mylist = drawChoose(screen,blackside)
+            for chooseSquare in mylist:
+                if chooseSquare.choose():
+                    drawSquare(screen, chooseSquare, yellow)
+                    screen.blit(chooseSquare.Piece.image, chooseSquare.Piece.rect)
+                if chooseSquare.getclick():
+                    Squarelist[position[0]][position[1]].addPieces(chooseSquare.Piece.addlocation(
+                        (Squarelist[position[0]][position[1]].x + 10, Squarelist[position[0]][position[1]].y + 10)))
+                    changeTurn = True
+                    turn = 0
         #print(turn)
         #if (before != None):
             #pygame.draw.circle(screen, lightblue, (before.x + 35, before.y + 35), 7)
