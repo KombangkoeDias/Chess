@@ -1,6 +1,6 @@
 import pygame
 
-from Event import startGame,drawmovesline,drawChoose
+from Event import startGame,drawmovesline,drawChoose,animation
 from Button import button
 from Background import BackgroundPhoto
 from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck,findSquarePosition,evaluatelose
@@ -124,7 +124,7 @@ def start_game():
     lastmove = None
     for i in range(8):
         for j in range(8):
-
+            """
             if ((i+j) %2 ==0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
@@ -211,13 +211,16 @@ def start_game():
                     if (j == 6):
                         newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation ,KnightW,1,whiteside))
                 Squarelist[i].append(newSquare)
-                """
+
     chosen = (10, 10)
     click = list()
     firstSquare = None
     secondSquare = None
     position = None
     changeTurn = True
+    #animate = False
+    #firstPiece = None
+    #secondPiece = None
     while gamePlay:
         screen.blit(GameplayBackground.image,GameplayBackground.rect)
         for event in pygame.event.get():
@@ -323,9 +326,12 @@ def start_game():
                 if (secondPiece.type != Empty):
                     print(firstPiece.type,firstPiece.order,'at',firstpos1,firstpos2,'eats',secondPiece.type,secondPiece.order,'at',secondpos1,secondpos2)
 
+
                 Squarelist[firstpos1][firstpos2].addPieces(
                     ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
                                 noside))
+                animation(Squarelist,screen,(firstPiece.rect.left, firstPiece.rect.top),(secondPiece.rect.left, secondPiece.rect.top),firstPiece)
+                #animate = True
                 Squarelist[secondpos1][secondpos2].addPieces(
                     ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
                                 firstPiece.order, firstPiece.side))
@@ -353,6 +359,8 @@ def start_game():
                 Squarelist[firstpos1][firstpos2].addPieces(
                     ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
                                 noside))
+                animation(Squarelist,screen,(firstPiece.rect.left, firstPiece.rect.top),(secondPiece.rect.left, secondPiece.rect.top),firstPiece)
+
                 Squarelist[secondpos1][secondpos2].addPieces(
                     ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top), firstPiece.type,
                                 firstPiece.order, firstPiece.side))

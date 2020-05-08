@@ -1,5 +1,5 @@
 import pygame
-from Piece import ChessPieces
+from Piece import ChessPieces,DrawPieces
 from square import Square
 Empty = 'Empty Space'
 PawnW = 'WhitePawn'
@@ -21,6 +21,12 @@ whiteside = 'White'
 blackside = 'Black'
 white = (255,255,255)
 darkgreen = (0,100,0)
+def drawPieces(screen,Squarelist):
+    for i in range(8):
+        for j in range(8):
+            newSquare = Squarelist[i][j]
+            if (Squarelist[i][j].Piece.type != Empty):
+                   DrawPieces(screen,newSquare)
 def drawSquare(screen,mySquare,ic):
     pygame.draw.rect(screen,ic,(mySquare.x,mySquare.y,mySquare.w,mySquare.h))
 def startGame():
@@ -72,3 +78,22 @@ def drawChoose(screen,side):
         screen.blit(Rook.image, Rook.rect)
         screen.blit(Queen.image, Queen.rect)
         return [myfirstSquare,mysecondSquare,mythirdSquare,myfourthSquare]
+def animation(squarelist,screen,firstlocation,secondlocation,myPiece):
+    firstx = firstlocation[0]
+    firsty = firstlocation[1]
+    secondx = secondlocation[0]
+    secondy = secondlocation[1]
+    differencex = secondx - firstx
+    differencey = secondy - firsty
+    for i in range(100):
+        movementx = differencex/100 *i
+        movementy = differencey/100 *i
+        pygame.time.delay(1)
+        myPiece.addlocation((firstx + movementx,firsty + movementy))
+        for i in range(8):
+            for j in range(8):
+                newSquare = squarelist[i][j]
+                drawSquare(screen, newSquare, newSquare.color)
+        drawPieces(screen, squarelist)
+        screen.blit(myPiece.image,(firstx + movementx,firsty + movementy))
+        pygame.display.update()
