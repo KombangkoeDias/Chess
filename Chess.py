@@ -5,6 +5,7 @@ from Button import button
 from Background import BackgroundPhoto
 from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck,findSquarePosition,evaluatelose
 from Piece import ChessPieces, DrawPieces
+from moves import checkPosition
 noside = ''
 pygame.init()
 whiteside = 'White'
@@ -133,28 +134,24 @@ def start_game():
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, darkgreen)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation,Empty,None,noside))
-            if (i == 4 and j == 4):
-                newSquare.addPieces(ChessPieces('Assets\Pieces/blackQueen.png', piecelocation, QueenB, 0, blackside))
             if (i == 4 and j == 7):
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation, KnightW, 1, whiteside))
             if (i == 3 and j == 3):
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whiteBishop.png', piecelocation, BishopW, 1, whiteside))
             #if (i == 4 and j == 2):
                 #newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation, KnightW, 0, whiteside))
-            if (i == 6 and j == 3):
+            if (i == 7 and j == 4):
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKing.png', piecelocation, KingW, 0, whiteside))
-            if (i == 6 and j == 4):
-                newSquare.addPieces(ChessPieces('Assets/Pieces/blackBishop.png', piecelocation, BishopB, 0, blackside))
             #if (i == 5 and j == 5):
                 #newSquare.addPieces(ChessPieces('Assets/Pieces/blackKnight.png', piecelocation, KnightB, 1, blackside))
-            if (i == 6 and j == 1):
+            if (i == 6 and j == 2):
                 newSquare.addPieces(ChessPieces('Assets\Pieces/blackKing.png', piecelocation, KingB, 0, blackside))
             if (i == 1 and j == 5):
                 newSquare.addPieces(ChessPieces('Assets/Pieces/blackRook.png', piecelocation, RookB, 0, blackside))
             if (i == 3 and j == 4):
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation, PawnW, j, whiteside))
-            if (i == 6 and j == 5):
-                newSquare.addPieces(ChessPieces('Assets/Pieces/blackPawn.png', piecelocation, PawnB, j, blackside))
+            if (i == 7 and j == 0):
+                newSquare.addPieces(ChessPieces('Assets\Pieces\whiteRook.png', piecelocation, RookW, 0, whiteside))
             Squarelist[i].append(newSquare)
             """
             if ((i + j) % 2 == 0):
@@ -300,6 +297,40 @@ def start_game():
             elif (turn == 0):
                 walkresult, eatresult = selectedSquare.evaluatepossiblemoves(Squarelist, (firstSquare, secondSquare),whitekingMove)
                 walkresult, eatresult = selectedSquare.checkPossibleMoves(Squarelist,walkresult,eatresult,whiteside,(firstSquare,secondSquare),whitekingMove)
+            if (click[0].Piece.type == KingW):
+                if (whiterook0move):
+                    if (Squarelist[7][2] in walkresult):
+                        walkresult.remove(Squarelist[7][2])
+                if (whiterook1move):
+                    if (Squarelist[7][6] in walkresult):
+                        walkresult.remove(Squarelist[7][6])
+
+
+                for walk in walkresult:
+                    (i, j) = findSquarePosition(Squarelist,walk)
+                    eightmoves = [(i - 1, j - 1), (i - 1, j), (i - 1, j + 1), (i, j - 1), (i, j + 1),
+                                  (i + 1, j - 1),
+                                  (i + 1, j), (i + 1, j + 1)]
+                    for position in eightmoves:
+                        if (checkPosition(position)):
+                            if (Squarelist[position[0]][position[1]].Piece.type == KingB):
+                                walkresult.remove(walk)
+
+            if (click[0].Piece.type == KingB):
+                if (blackrook0move):
+                    if (Squarelist[0][2] in walkresult):
+                        walkresult.remove(Squarelist[0][2])
+                    if (Squarelist[0][6] in walkresult):
+                        walkresult.remove(Squarelist[0][6])
+                for walk in walkresult:
+                    (i, j) = findSquarePosition(Squarelist, walk)
+                    eightmoves = [(i - 1, j - 1), (i - 1, j), (i - 1, j + 1), (i, j - 1), (i, j + 1),
+                                  (i + 1, j - 1),
+                                  (i + 1, j), (i + 1, j + 1)]
+                    for position in eightmoves:
+                        if (checkPosition(position)):
+                            if (Squarelist[position[0]][position[1]].Piece.type == KingW):
+                                walkresult.remove(walk)
             for walkSquare in walkresult:
                 pygame.draw.circle(screen, green, (walkSquare.x + 35, walkSquare.y + 35), 7)
             for eatSquare in eatresult:
@@ -360,6 +391,25 @@ def start_game():
                         ChessPieces('Assets\Pieces\whitePawn.png',
                                     (Squarelist[7][7].Piece.rect.left, Squarelist[7][7].Piece.rect.top), Empty, None,
                                     noside))
+                elif (click[0].Piece.type == KingW and findSquarePosition(Squarelist,click[0]) == (7,4) and findSquarePosition(Squarelist,click[1]) == (7,2) and not whiterook0move
+                    and Squarelist[7][0].Piece.type == RookW and Squarelist[7][0].Piece.order == 0):
+                    Squarelist[7][4].addPieces(
+                        ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty,
+                                    None,
+                                    noside))
+                    animation(Squarelist, screen, (firstPiece.rect.left, firstPiece.rect.top),
+                              (Squarelist[7][2].Piece.rect.left, Squarelist[7][2].Piece.rect.top), firstPiece)
+                    Squarelist[7][2].addPieces(
+                        ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top),
+                                    firstPiece.type,
+                                    firstPiece.order, firstPiece.side))
+                    Squarelist[7][3].addPieces(ChessPieces(Squarelist[7][0].Piece.imagefile, (
+                        Squarelist[7][3].Piece.rect.left, Squarelist[7][3].Piece.rect.top), Squarelist[7][0].Piece.type,
+                                                           Squarelist[7][0].Piece.order, Squarelist[7][0].Piece.side))
+                    Squarelist[7][0].addPieces(
+                        ChessPieces('Assets\Pieces\whitePawn.png',
+                                    (Squarelist[0][0].Piece.rect.left, Squarelist[0][0].Piece.rect.top), Empty, None,
+                                    noside))
                 else:
                     Squarelist[firstpos1][firstpos2].addPieces(
                         ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
@@ -413,6 +463,25 @@ def start_game():
                     Squarelist[0][7].addPieces(
                         ChessPieces('Assets\Pieces\whitePawn.png', (Squarelist[0][7].Piece.rect.left, Squarelist[0][7].Piece.rect.top), Empty,None,noside))
 
+                elif (click[0].Piece.type == KingB and findSquarePosition(Squarelist,click[0]) == (0,4) and findSquarePosition(Squarelist,click[1]) == (0,2) and not blackrook0move
+                    and Squarelist[0][0].Piece.type == RookB and Squarelist[0][0].Piece.order == 0):
+                    Squarelist[0][4].addPieces(
+                        ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty,
+                                    None,
+                                    noside))
+                    animation(Squarelist, screen, (firstPiece.rect.left, firstPiece.rect.top),
+                              (Squarelist[0][2].Piece.rect.left, Squarelist[0][2].Piece.rect.top), firstPiece)
+                    Squarelist[0][2].addPieces(
+                        ChessPieces(firstPiece.imagefile, (secondPiece.rect.left, secondPiece.rect.top),
+                                    firstPiece.type,
+                                    firstPiece.order, firstPiece.side))
+                    Squarelist[0][3].addPieces(ChessPieces(Squarelist[0][0].Piece.imagefile, (
+                        Squarelist[0][3].Piece.rect.left, Squarelist[0][3].Piece.rect.top), Squarelist[0][0].Piece.type,
+                                                           Squarelist[0][0].Piece.order, Squarelist[0][0].Piece.side))
+                    Squarelist[0][0].addPieces(
+                        ChessPieces('Assets\Pieces\whitePawn.png',
+                                    (Squarelist[0][0].Piece.rect.left, Squarelist[0][0].Piece.rect.top), Empty, None,
+                                    noside))
                 else:
                     Squarelist[firstpos1][firstpos2].addPieces(
                         ChessPieces('Assets\Pieces\whitePawn.png', (firstPiece.rect.left, firstPiece.rect.top), Empty, None,
