@@ -315,16 +315,18 @@ def KingMoves(Squarelist,a,b,walkresult,eatresult,side,lastmove,kingmove):
 
         if (not kingmove and not check):
             #print('not move')
-            if (Squarelist[7][5].Piece.type == Empty and Squarelist[7][6].Piece.type == Empty):
-                #print('can go')
+            if (Squarelist[7][5].Piece.type == Empty and Squarelist[7][6].Piece.type == Empty and not isSeen(Squarelist,Squarelist[7][5],blackside,lastmove,kingmove)
+                    and not isSeen(Squarelist,Squarelist[7][6],blackside,lastmove,kingmove)):
+                print('can go')
                 walkresult.append(Squarelist[7][6])
     if (a == 0 and side == blackside):
         check, i, j = evaluateCheck(Squarelist, blackside, lastmove, kingmove)
 
         if (not kingmove and not check):
             # print('not move')
-            if (Squarelist[0][5].Piece.type == Empty and Squarelist[0][6].Piece.type == Empty):
-                #print('can go')
+            if (Squarelist[0][5].Piece.type == Empty and Squarelist[0][6].Piece.type == Empty and not isSeen(Squarelist,Squarelist[0][5],whiteside,lastmove,kingmove)
+                    and not isSeen(Squarelist,Squarelist[0][6],whiteside,lastmove,kingmove)):
+                print('can go')
                 walkresult.append(Squarelist[0][6])
 
     for move in eightmoves:
@@ -386,3 +388,11 @@ def KingMoves(Squarelist,a,b,walkresult,eatresult,side,lastmove,kingmove):
                     walkresult.append(Squarelist[first][second])
     return (walkresult,eatresult)
 
+def isSeen(squarelist,mySquare,side,lastmove,kingmove):
+    for i in range(8):
+        for j in range(8):
+            if (squarelist[i][j].Piece.side == side):
+                walk,eat = squarelist[i][j].evaluatepossiblemoves(squarelist,lastmove,kingmove)
+                if (mySquare in walk):
+                    return True
+    return False
