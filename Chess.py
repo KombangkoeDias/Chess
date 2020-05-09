@@ -125,7 +125,7 @@ def start_game():
     lastmove = None
     for i in range(8):
         for j in range(8):
-            """
+
             if ((i+j) %2 ==0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
@@ -146,8 +146,11 @@ def start_game():
                 #newSquare.addPieces(ChessPieces('Assets/Pieces/blackKnight.png', piecelocation, KnightB, 1, blackside))
             if (i == 6 and j == 2):
                 newSquare.addPieces(ChessPieces('Assets\Pieces/blackKing.png', piecelocation, KingB, 0, blackside))
-            if (i == 1 and j == 5):
-                newSquare.addPieces(ChessPieces('Assets/Pieces/blackRook.png', piecelocation, RookB, 0, blackside))
+            if (i == 4 and j == 3):
+                newSquare.addPieces(ChessPieces('Assets\Pieces\whiteQueen.png', piecelocation, QueenW, 0, whiteside))
+            if (i == 2 and j == 3):
+                newSquare.addPieces(ChessPieces('Assets/Pieces/blackPawn.png', piecelocation, PawnB, j, blackside))
+
             if (i == 3 and j == 4):
                 newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation, PawnW, j, whiteside))
             if (i == 7 and j == 0):
@@ -208,7 +211,7 @@ def start_game():
                     if (j == 6):
                         newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation ,KnightW,1,whiteside))
                 Squarelist[i].append(newSquare)
-
+                """
     chosen = (10, 10)
     click = list()
     firstSquare = None
@@ -536,6 +539,33 @@ def start_game():
         #print(turn)
         #if (before != None):
             #pygame.draw.circle(screen, lightblue, (before.x + 35, before.y + 35), 7)
+        whiteavailablemoves = 0
+        blackavailablemoves = 0
+        for i in range(8):
+            for j in range(8):
+                if (turn == 1 and Squarelist[i][j].Piece.side == blackside):
+                    #print('in1')
+                    walk,move = Squarelist[i][j].evaluatepossiblemoves(Squarelist,(firstSquare,secondSquare),blackkingMove)
+                    blackavailablemoves += len(walk)
+                    blackavailablemoves += len(move)
+                if (turn == 0 and Squarelist[i][j].Piece.side == whiteside):
+                    #print('in0')
+                    walk,move = Squarelist[i][j].evaluatepossiblemoves(Squarelist,(firstSquare,secondSquare),whitekingMove)
+                    whiteavailablemoves += len(walk)
+                    whiteavailablemoves += len(move)
+
+        #print(whiteavailablemoves,blackavailablemoves)
+        if (whiteavailablemoves == 0 and turn == 0):
+            check,i,j = evaluateCheck(Squarelist,whiteside,(firstSquare,secondSquare),whitekingMove)
+            if (not check):
+                print('draw because white has no moves left')
+                turn = 3 #stalemate
+        elif (blackavailablemoves == 0 and turn == 1):
+            check,i,j = evaluateCheck(Squarelist,blackside,(firstSquare,secondSquare),blackkingMove)
+            if (not check):
+                print('draw because black has no moves left')
+                turn = 3 #stalemate
+
         check, first,second = evaluateCheck(Squarelist,whiteside,(firstSquare,secondSquare),whitekingMove)
         if check:
             drawSquare(screen,Squarelist[first][second],purple)
