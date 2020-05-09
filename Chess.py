@@ -124,6 +124,8 @@ def start_game():
     before = None
     lastmove = None
     fiftycheck = 0
+    blackthreemovelist = list()
+    whitethreemovelist = list()
     for i in range(8):
         for j in range(8):
             """
@@ -377,7 +379,15 @@ def start_game():
                     else:
                         fiftycheck += 1
                     #print(fiftycheck)
-
+                if (len(whitethreemovelist) < 6):
+                    whitethreemovelist.append((secondpos1,secondpos2))
+                    print(whitethreemovelist)
+                else:
+                    for i in range(5):
+                        whitethreemovelist[i] = whitethreemovelist[i + 1]
+                    whitethreemovelist.pop(5)
+                    whitethreemovelist.append((secondpos1,secondpos2))
+                    print(whitethreemovelist)
                 if (click[0].Piece.type == KingW):
                     whitekingMove = True
                 if (click[0].Piece.type == RookW and click[0].Piece.order == 0):
@@ -461,7 +471,15 @@ def start_game():
                     else:
                         fiftycheck += 1
                     #print(fiftycheck)
-
+                if (len(blackthreemovelist) < 6):
+                    blackthreemovelist.append((secondpos1,secondpos2))
+                    print(blackthreemovelist)
+                else:
+                    for i in range(5):
+                        blackthreemovelist[i] = blackthreemovelist[i+1]
+                    blackthreemovelist.pop(5)
+                    blackthreemovelist.append((secondpos1,secondpos2))
+                    print(blackthreemovelist)
                 if (click[0].Piece.type == KingB):
                     blackkingMove = True
                 if (click[0].Piece.type == RookB and click[0].Piece.order == 0):
@@ -481,7 +499,7 @@ def start_game():
                                 firstPiece.order, firstPiece.side))
                     Squarelist[0][5].addPieces(ChessPieces(Squarelist[0][7].Piece.imagefile,(Squarelist[0][5].Piece.rect.left,Squarelist[0][5].Piece.rect.top), Squarelist[0][7].Piece.type,
                                                Squarelist[0][7].Piece.order,Squarelist[0][7].Piece.side))
-                    print(Squarelist[0][7].Piece.type)
+                    #print(Squarelist[0][7].Piece.type)
                     Squarelist[0][7].addPieces(
                         ChessPieces('Assets\Pieces\whitePawn.png', (Squarelist[0][7].Piece.rect.left, Squarelist[0][7].Piece.rect.top), Empty,None,noside))
 
@@ -587,7 +605,13 @@ def start_game():
 
         if (fiftycheck == 50):
             print('draw because no moves occur for 50 turns') # the fifty-move rule
-
+            turn = 3
+        if (len(whitethreemovelist) == 6 and len(blackthreemovelist) == 6 and turn < 2):
+            if ((whitethreemovelist[0] == whitethreemovelist[2] == whitethreemovelist[4] and whitethreemovelist[1]
+                    == whitethreemovelist[3] == whitethreemovelist[5]) or (blackthreemovelist[0] == blackthreemovelist[2]
+                    == blackthreemovelist[4] and blackthreemovelist[1] == blackthreemovelist[3] == blackthreemovelist[5])):
+                print('draw because same moves for 3 times') # threefold repetition
+                turn = 3
         check, first,second = evaluateCheck(Squarelist,whiteside,(firstSquare,secondSquare),whitekingMove)
         if check:
             drawSquare(screen,Squarelist[first][second],purple)
