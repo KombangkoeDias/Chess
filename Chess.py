@@ -123,9 +123,10 @@ def start_game():
     turn = 0
     before = None
     lastmove = None
+    fiftycheck = 0
     for i in range(8):
         for j in range(8):
-
+            """
             if ((i+j) %2 ==0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
@@ -211,7 +212,7 @@ def start_game():
                     if (j == 6):
                         newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation ,KnightW,1,whiteside))
                 Squarelist[i].append(newSquare)
-                """
+
     chosen = (10, 10)
     click = list()
     firstSquare = None
@@ -368,6 +369,15 @@ def start_game():
                 (secondpos1, secondpos2) = findSquarePosition(Squarelist, click[1])
                 if (secondPiece.type != Empty):
                     print(firstPiece.type,firstPiece.order,'at',firstpos1,firstpos2,'eats',secondPiece.type,secondPiece.order,'at',secondpos1,secondpos2)
+                    fiftycheck = 0
+                    #print(fiftycheck)
+                else:
+                    if (firstPiece.type == PawnW):
+                        fiftycheck = 0
+                    else:
+                        fiftycheck += 1
+                    #print(fiftycheck)
+
                 if (click[0].Piece.type == KingW):
                     whitekingMove = True
                 if (click[0].Piece.type == RookW and click[0].Piece.order == 0):
@@ -443,6 +453,15 @@ def start_game():
                 if (secondPiece.type != Empty):
                     print(firstPiece.type, firstPiece.order, 'at', firstpos1, firstpos2, 'eats', secondPiece.type,
                           secondPiece.order, 'at', secondpos1, secondpos2)
+                    fiftycheck = 0
+                    #print(fiftycheck)
+                else:
+                    if (firstPiece.type == PawnB):
+                        fiftycheck = 0
+                    else:
+                        fiftycheck += 1
+                    #print(fiftycheck)
+
                 if (click[0].Piece.type == KingB):
                     blackkingMove = True
                 if (click[0].Piece.type == RookB and click[0].Piece.order == 0):
@@ -565,6 +584,9 @@ def start_game():
             if (not check):
                 print('draw because black has no moves left')
                 turn = 3 #stalemate
+
+        if (fiftycheck == 50):
+            print('draw because no moves occur for 50 turns') # the fifty-move rule
 
         check, first,second = evaluateCheck(Squarelist,whiteside,(firstSquare,secondSquare),whitekingMove)
         if check:
