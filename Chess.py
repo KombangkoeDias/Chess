@@ -1,5 +1,7 @@
 import pygame
-
+"""
+Chess Game Github : Kombangkoe Dias
+"""
 from Event import startGame,drawmovesline,drawChoose,animation
 from Button import button
 from Background import BackgroundPhoto
