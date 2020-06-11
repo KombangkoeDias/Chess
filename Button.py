@@ -1,5 +1,5 @@
 import pygame
-def button(screen, msg, x, y, w, h, ic, ac, action = None):
+def button(screen, msg, x, y, w, h, ic, ac, action):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     smallText = pygame.font.Font('freesansbold.ttf', 20)
@@ -19,6 +19,7 @@ def button(screen, msg, x, y, w, h, ic, ac, action = None):
         if click[0] == 1 and action != None and myvalue == None:
             myvalue = 1
             action()
+            pygame.time.delay(1000)
             return False
         else:
             return True
