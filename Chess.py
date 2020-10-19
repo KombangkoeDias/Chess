@@ -2,17 +2,18 @@ import pygame
 """
 Chess Game Github : Kombangkoe Dias
 """
-from Event import startGame,drawmovesline,drawChoose,animation
+from Event import drawmovesline,drawChoose,animation
 from Button import button
 from Background import BackgroundPhoto
 from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck,findSquarePosition,evaluatelose
 from Piece import ChessPieces, DrawPieces
 from moves import checkPosition
 noside = ''
-pygame.init()
-whiteside = 'White'
-blackside = 'Black'
+pygame.init() # initiate the pygame library
+whiteside = 'White'  # string used to differentiate between white piece and black piece
+blackside = 'Black'  # string used to differentiate between white piece and black piece
 
+# colors used in the game.
 white = (255, 255, 255)
 green = (0, 255, 0)
 blue = (0, 0, 128)
@@ -27,9 +28,11 @@ orange = (255, 165, 0)
 purple = (128,0,128)
 lightblue = (173, 216, 230)
 
+# screen width and height
 Width = 1000
 Height = 600
 
+# visions of the game's first screen.
 Background = BackgroundPhoto('Assets\Chessbackground.png',[0,0])
 screen = pygame.display.set_mode((Width, Height))
 
@@ -62,75 +65,32 @@ clock = pygame.time.Clock()
 
 def game_intro():
     intro = True
+    # when the player doesn't click start intro will still be true.
     while intro:
-        screen.blit(Background.image, Background.rect)
-        screen.blit(text, textRect)
-        screen.blit(Startplaying, startRect)
+        screen.blit(Background.image, Background.rect)  # draw background.
+        screen.blit(text, textRect)  # draw the first text.
+        screen.blit(Startplaying, startRect)  # draw the second text.
         for event in pygame.event.get():
             #print(event)
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT:  # quit event.
                 pygame.quit()
                 quit()
-        intro = button(screen, "Start", Width // 2 - 100, Height // 2 + 50, 150, 40, vegasgold, gold, startGame)
-        button(screen,"Quit",Width//2-100,Height//2+120,150,40,red,tomago,quit)
-        pygame.display.update()
-# infinite loop
+        button(screen, "Start", Width // 2 - 100, Height // 2 + 50, 150, 40, vegasgold, gold, start_game)  # draw the start button.
+        button(screen,"Quit",Width//2-100,Height//2+120,150,40,red,tomago,quit) # draw the quit button.
+        pygame.display.update()  # update the screen every cycle for hover effects on button.
 
 GameplayBackground = BackgroundPhoto('Assets\Horses.jpg',[0,0])
 
-WhitePawn = list()
-WhiteKnight = list()
-WhiteBishop = list()
-WhiteRook = list()
-WhiteKing = list()
-WhiteQueen = list()
-
-BlackPawn = list()
-BlackKnight = list()
-BlackBishop = list()
-BlackRook = list()
-BlackKing = list()
-BlackQueen = list()
-
-
-def blackposition(i):
-    return (230+70*i, 40)
-def whiteposition(i):
-    return (230+70*i, 530)
-
-
-for i in range(8):
-    WhitePawn.append((230+70*i, 460))
-    BlackPawn.append((230+70*i, 110))
-
-for i in range(8):
-    if (i == 0 or i == 7):
-        WhiteRook.append(whiteposition(i))
-        BlackRook.append(blackposition(i))
-    elif (i == 1 or i == 6):
-        WhiteKnight.append(whiteposition(i))
-        BlackKnight.append(blackposition(i))
-    elif (i == 2 or i == 5):
-        WhiteBishop.append(whiteposition(i))
-        BlackBishop.append(blackposition(i))
-    elif (i == 3):
-        WhiteQueen.append(whiteposition(i))
-        BlackQueen.append(blackposition(i))
-    else:
-        WhiteKing.append(whiteposition(i))
-        BlackKing.append(blackposition(i))
+Squarelist = list()  # list contains all square object on the board.
 
 def drawPieces():
     global Squarelist
+    # iterate through all squares.
     for i in range(8):
         for j in range(8):
-            newSquare = Squarelist[i][j]
-            if (Squarelist[i][j].Piece.type != Empty):
+            newSquare = Squarelist[i][j]  # look at the current square.
+            if (Squarelist[i][j].Piece.type != Empty):  # if the position should have piece then draw it.
                    DrawPieces(screen,newSquare)
-
-Squarelist = list()
-
-
 
 def setBoard():
     Squarelist.clear()
@@ -139,7 +99,6 @@ def setBoard():
         Squarelist.append(mylist)
     for i in range(8):
         for j in range(8):
-
             if ((i + j) % 2 == 0):
                 newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
                 piecelocation = (newSquare.x + 10, newSquare.y + 10)
@@ -212,6 +171,7 @@ def setBoard():
                 Squarelist[i].append(newSquare)
 
 def start_game():
+    print("Starting the game now!")
     global Squarelist
     blackWin = False
     whiteWin = False
@@ -225,38 +185,7 @@ def start_game():
     fiftycheck = 0
     blackthreemovelist = list()
     whitethreemovelist = list()
-    """
-                if ((i+j) %2 ==0):
-                    newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, white)
-                    piecelocation = (newSquare.x + 10, newSquare.y + 10)
-                    newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation,Empty,None,noside))
-                else:
-                    newSquare = Square(220 + 70 * j, 30 + 70 * i, 70, 70, darkgreen)
-                    piecelocation = (newSquare.x + 10, newSquare.y + 10)
-                    newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation,Empty,None,noside))
-                if (i == 4 and j == 7):
-                    newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation, KnightW, 1, whiteside))
-                if (i == 3 and j == 3):
-                    newSquare.addPieces(ChessPieces('Assets\Pieces\whiteBishop.png', piecelocation, BishopW, 1, whiteside))
-                #if (i == 4 and j == 2):
-                    #newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKnight.png', piecelocation, KnightW, 0, whiteside))
-                if (i == 7 and j == 4):
-                    newSquare.addPieces(ChessPieces('Assets\Pieces\whiteKing.png', piecelocation, KingW, 0, whiteside))
-                #if (i == 5 and j == 5):
-                    #newSquare.addPieces(ChessPieces('Assets/Pieces/blackKnight.png', piecelocation, KnightB, 1, blackside))
-                if (i == 6 and j == 2):
-                    newSquare.addPieces(ChessPieces('Assets\Pieces/blackKing.png', piecelocation, KingB, 0, blackside))
-                if (i == 4 and j == 3):
-                    newSquare.addPieces(ChessPieces('Assets\Pieces\whiteQueen.png', piecelocation, QueenW, 0, whiteside))
-                if (i == 2 and j == 3):
-                    newSquare.addPieces(ChessPieces('Assets/Pieces/blackPawn.png', piecelocation, PawnB, j, blackside))
 
-                if (i == 3 and j == 4):
-                    newSquare.addPieces(ChessPieces('Assets\Pieces\whitePawn.png', piecelocation, PawnW, j, whiteside))
-                if (i == 7 and j == 0):
-                    newSquare.addPieces(ChessPieces('Assets\Pieces\whiteRook.png', piecelocation, RookW, 0, whiteside))
-                Squarelist[i].append(newSquare)
-                """
     setBoard()
 
     click = list()
@@ -264,9 +193,6 @@ def start_game():
     secondSquare = None
     position = None
     changeTurn = True
-    #animate = False
-    #firstPiece = None
-    #secondPiece = None
     whitekingMove = False
     blackkingMove = False
     whiterook0move = False
@@ -729,7 +655,7 @@ def start_game():
 
         pygame.display.update()
 
-
 game_intro()
-start_game()
+
+
 
