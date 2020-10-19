@@ -8,7 +8,8 @@ from Background import BackgroundPhoto
 from square import drawSquare, Square , PawnW, PawnB, KnightW, KnightB, BishopW, BishopB, KingW, KingB, QueenW, QueenB,Empty,RookW,RookB,evaluateCheck,findSquarePosition,evaluatelose
 from Piece import ChessPieces, DrawPieces
 from moves import checkPosition
-noside = ''
+
+noside = ''  # specified side for the empty squares.
 pygame.init() # initiate the pygame library
 whiteside = 'White'  # string used to differentiate between white piece and black piece
 blackside = 'Black'  # string used to differentiate between white piece and black piece
